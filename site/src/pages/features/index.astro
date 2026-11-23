@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EditorialCard from '../../components/EditorialCard.astro';
+import { getFeatures } from '../../lib/content';
+
+const features = await getFeatures();
+---
+
+<BaseLayout
+  title="专题"
+  description="CineScope 专题：国家电影、导演、流派、电影史与技术美学的深度文章。"
+>
+  <div class="shell">
+    <header class="border-b border-line pb-10 pt-16 md:pb-14 md:pt-24">
+      <p class="kicker">Features</p>
+      <h1 class="mt-5 max-w-3xl font-serif-cn text-[2.4rem] leading-tight text-paper md:text-[3.6rem]">
+        比一部电影更长的问题
+      </h1>
+      <p class="mt-5 max-w-2xl text-[0.95rem] leading-loose text-muted">
+        专题不受每日与每周推荐限制。它们关于一个国家、一种语言、一段电影史，或一个反复出现的主题。每篇都以可核实的资料为基础，并保留编辑部的独立判断。
+      </p>
+    </header>
+
+    <div class="mt-12">
+      <div class="grid gap-10 md:grid-cols-3">
+        {
+          features.map((feature, index) => (
+            <EditorialCard feature={{ ...feature, slug: feature.id }} index={index} />
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-20 border-t border-line-soft py-8">
+      <p class="text-[0.75rem] leading-relaxed text-muted/80">
+        专题文章中的事实性陈述均标注资料来源；外部评论观点与编辑部判断分开表述。若某一维度缺乏可靠材料，我们不强行评价。
+      </p>
+    </div>
+  </div>
+</BaseLayout>

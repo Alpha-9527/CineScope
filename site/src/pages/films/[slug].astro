@@ -1,0 +1,130 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Artwork from '../../components/Artwork.astro';
+import FilmFacts from '../../components/FilmFacts.astro';
+import FilmCard from '../../components/FilmCard.astro';
+import { getDaily, getFilms, getFilmMap } from '../../lib/content';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const films = await getFilms();
+  return films.map((film, index) => ({
+    params: { slug: film.slug },
+    props: { film, prev: films[index - 1], next: films[index + 1] },
+  }));
+}
+
+const { film, prev, next } = Astro.props;
+const [filmMap, dailies] = await Promise.all([getFilmMap(), getDaily()]);
+const { Content } = await render(film);
+
+const edition = dailies.find((item) => item.data.films.some((f) => f.slug === film.slug));
+const related = (edition?.data.films ?? [])
+  .filter((item) => item.slug !== film.slug)
+  .map((item) => filmMap.get(item.slug))
+  .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+  .slice(0, 2);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Movie',
+  name: film.data.title,
+  alternateName: film.data.originalTitle,
+  dateCreated: String(film.data.year),
+  genre: film.data.genres,
+  inLanguage: film.data.language,
+  duration: `PT${film.data.runtime}M`,
+  countryOfOrigin: film.data.countries.map((name) => ({ '@type': 'Country', name })),
+  director: film.data.directors.map((name) => ({ '@type': 'Person', name })),
+  actor: film.data.cast.map((name) => ({ '@type': 'Person', name })),
+  review: {
+    '@type': 'Review',
+    reviewBody: film.body?.slice(0, 280),
+    author: { '@type': 'Organization', name: SITE.author },
+  },
+  publisher: { '@type': 'Organization', name: SITE.name },
+};
+---
+
+<ArticleLayout
+  kicker={`电影 · ${film.data.selection.issue ?? film.data.year}`}
+  title={film.data.title}
+  originalTitle={film.data.originalTitle}
+  subtitle={film.data.selection.angle}
+  date={film.data.selection.issue}
+  description={film.data.selection.angle}
+  sources={film.data.sources}
+  jsonLd={jsonLd}
+>
+  <div slot="hero">
+    <Artwork
+      palette={film.data.palette}
+      title={film.data.title}
+      originalTitle={film.data.originalTitle}
+      year={film.data.year}
+      label={`${film.data.countries.join(' / ')} · ${film.data.directors.join('、')}`}
+      src={film.data.backdrop}
+      alt={`${film.data.title} 剧照`}
+      ratio="wide"
+      eager
+      plain
+    />
+  </div>
+
+  <div slot="meta">
+    <FilmFacts film={film} />
+  </div>
+
+  <Content />
+
+  {
+    related.length > 0 && (
+      <div slot="after" class="shell mt-20">
+        <div class="border-t border-line pt-8">
+          <div class="flex flex-wrap items-baseline justify-between gap-3">
+            <p class="kicker">同期推荐</p>
+            {edition && (
+              <a
+                href={`/daily/${edition.id}/`}
+                class="text-[0.7rem] uppercase tracking-[0.14em] text-muted hover:text-gold"
+              >
+                {edition.data.title} →
+              </a>
+            )}
+          </div>
+          <div class="mt-8 grid gap-x-7 gap-y-10 sm:grid-cols-2">
+            {related.map((entry, index) => (
+              <FilmCard film={entry} index={index} />
+            ))}
+          </div>
+        </div>
+
+        <nav class="mt-16 border-t border-line-soft pt-6" aria-label="影片导航">
+          <div class="flex items-center justify-between gap-6 text-[0.72rem]">
+            {prev ? (
+              <a href={`/films/${prev.slug}/`} class="group max-w-[45%]">
+                <span class="text-muted">上一部</span>
+                <span class="mt-1 block truncate text-paper-dim group-hover:text-gold">
+                  {prev.data.title}
+                </span>
+              </a>
+            ) : (
+              <span />
+            )}
+            {next ? (
+              <a href={`/films/${next.slug}/`} class="group max-w-[45%] text-right">
+                <span class="text-muted">下一部</span>
+                <span class="mt-1 block truncate text-paper-dim group-hover:text-gold">
+                  {next.data.title}
+                </span>
+              </a>
+            ) : (
+              <span />
+            )}
+          </div>
+        </nav>
+      </div>
+    )
+  }
+</ArticleLayout>

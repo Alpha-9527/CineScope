@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDaily, getFeatures, getFilms, getMagazines } from '../../lib/content';
+import { formatDate, formatDateShort, issueLabel, weekLabel } from '../../lib/site';
+
+const [dailies, magazines, features, films] = await Promise.all([
+  getDaily(),
+  getMagazines(),
+  getFeatures(),
+  getFilms(),
+]);
+
+function groupByYear<T extends { data: { date: string } }>(items: T[]) {
+  const groups = new Map<string, T[]>();
+  for (const item of items) {
+    const year = item.data.date.slice(0, 4);
+    if (!groups.has(year)) groups.set(year, []);
+    groups.get(year)!.push(item);
+  }
+  return [...groups.entries()];
+}
+
+const dailyGroups = groupByYear(dailies);
+const magazineGroups = groupByYear(magazines);
+const featureGroups = groupByYear(features);
+---
+
+<BaseLayout
+  title="往期归档"
+  description="CineScope 全部已出版内容：每日推荐、每周杂志与专题文章，按年份归档。"
+>
+  <div class="shell">
+    <header class="border-b border-line pb-10 pt-16 md:pb-14 md:pt-24">
+      <p class="kicker">Archive</p>
+      <h1 class="mt-5 font-serif-cn text-[2.4rem] leading-tight text-paper md:text-[3.6rem]">
+        往期
+      </h1>
+      <p class="mt-5 max-w-2xl text-[0.95rem] leading-loose text-muted">
+        所有已出版的刊物与文章，按时间保存。归档只做导航，不提供站内搜索——我们更希望你是来翻阅，而不是来查询。
+      </p>
+
+      <dl class="mt-10 flex flex-wrap gap-x-12 gap-y-5">
+        <div>
+          <dt class="text-[0.62rem] uppercase tracking-[0.18em] text-muted">每日刊物</dt>
+          <dd class="mt-1 font-display text-2xl text-paper">{String(dailies.length).padStart(2, '0')}</dd>
+        </div>
+        <div>
+          <dt class="text-[0.62rem] uppercase tracking-[0.18em] text-muted">每周杂志</dt>
+          <dd class="mt-1 font-display text-2xl text-paper">{String(magazines.length).padStart(2, '0')}</dd>
+        </div>
+        <div>
+          <dt class="text-[0.62rem] uppercase tracking-[0.18em] text-muted">专题</dt>
+          <dd class="mt-1 font-display text-2xl text-paper">{String(features.length).padStart(2, '0')}</dd>
+        </div>
+        <div>
+          <dt class="text-[0.62rem] uppercase tracking-[0.18em] text-muted">收录影片</dt>
+          <dd class="mt-1 font-display text-2xl text-paper">{String(films.length).padStart(2, '0')}</dd>
+        </div>
+      </dl>
+    </header>
+
+    <section class="mt-14 md:mt-20" aria-labelledby="daily-archive">
+      <div class="flex items-baseline justify-between border-b border-line pb-4">
+        <h2 id="daily-archive" class="font-serif-cn text-xl text-paper">每日推荐</h2>
+        <a href="/daily/" class="text-[0.68rem] uppercase tracking-[0.14em] text-muted hover:text-gold">全部</a>
+      </div>
+
+      {
+        dailyGroups.map(([year, items]) => (
+          <div class="mt-8 grid gap-6 md:grid-cols-12">
+            <h3 class="font-display text-lg tracking-[0.1em] text-gold/80 md:col-span-2">{year}</h3>
+            <ul class="md:col-span-10">
+              {items.map((edition) => (
+                <li class="border-b border-line-soft">
+                  <a href={`/daily/${edition.id}/`} class="group flex flex-wrap items-baseline gap-x-5 gap-y-1 py-3">
+                    <span class="w-24 shrink-0 font-display text-[0.85rem] tracking-[0.06em] text-muted">
+                      {formatDateShort(edition.data.date)}
+                    </span>
+                    <span class="font-serif-cn text-[0.98rem] text-paper-dim group-hover:text-gold">
+                      {edition.data.title}
+                    </span>
+                    <span class="text-[0.65rem] uppercase tracking-[0.14em] text-muted/60">
+                      {issueLabel(edition.data.issue)}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="mt-16 md:mt-24" aria-labelledby="magazine-archive">
+      <div class="flex items-baseline justify-between border-b border-line pb-4">
+        <h2 id="magazine-archive" class="font-serif-cn text-xl text-paper">每周杂志</h2>
+        <a href="/magazine/" class="text-[0.68rem] uppercase tracking-[0.14em] text-muted hover:text-gold">全部</a>
+      </div>
+
+      {
+        magazineGroups.map(([year, items]) => (
+          <div class="mt-8 grid gap-6 md:grid-cols-12">
+            <h3 class="font-display text-lg tracking-[0.1em] text-gold/80 md:col-span-2">{year}</h3>
+            <ul class="md:col-span-10">
+              {items.map((issue) => (
+                <li class="border-b border-line-soft">
+                  <a href={`/magazine/${issue.id}/`} class="group flex flex-wrap items-baseline gap-x-5 gap-y-1 py-3">
+                    <span class="w-24 shrink-0 font-display text-[0.85rem] tracking-[0.06em] text-muted">
+                      {weekLabel(issue.data.year, issue.data.week)}
+                    </span>
+                    <span class="font-serif-cn text-[0.98rem] text-paper-dim group-hover:text-gold">
+                      {issue.data.title}
+                    </span>
+                    <span class="text-[0.68rem] text-muted/70">{issue.data.theme}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="mt-16 md:mt-24" aria-labelledby="feature-archive">
+      <div class="flex items-baseline justify-between border-b border-line pb-4">
+        <h2 id="feature-archive" class="font-serif-cn text-xl text-paper">专题</h2>
+        <a href="/features/" class="text-[0.68rem] uppercase tracking-[0.14em] text-muted hover:text-gold">全部</a>
+      </div>
+
+      {
+        featureGroups.map(([year, items]) => (
+          <div class="mt-8 grid gap-6 md:grid-cols-12">
+            <h3 class="font-display text-lg tracking-[0.1em] text-gold/80 md:col-span-2">{year}</h3>
+            <ul class="md:col-span-10">
+              {items.map((feature) => (
+                <li class="border-b border-line-soft">
+                  <a href={`/features/${feature.id}/`} class="group flex flex-wrap items-baseline gap-x-5 gap-y-1 py-3">
+                    <span class="w-24 shrink-0 font-display text-[0.85rem] tracking-[0.06em] text-muted">
+                      {formatDate(feature.data.date)}
+                    </span>
+                    <span class="font-serif-cn text-[0.98rem] text-paper-dim group-hover:text-gold">
+                      {feature.data.title}
+                    </span>
+                    <span class="text-[0.65rem] uppercase tracking-[0.14em] text-muted/60">
+                      {feature.data.topic}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+  </div>
+</BaseLayout>

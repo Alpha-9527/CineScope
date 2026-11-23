@@ -1,0 +1,123 @@
+---
+import Artwork from './Artwork.astro';
+import { formatDate, formatWeekday, issueLabel } from '../lib/site';
+
+interface Props {
+  edition: {
+    slug: string;
+    data: {
+      date: string;
+      issue: number;
+      title: string;
+      subtitle: string;
+      editorIntro: string;
+    };
+  };
+  film: {
+    slug: string;
+    data: {
+      title: string;
+      originalTitle: string;
+      year: number;
+      palette: string;
+      backdrop?: string;
+      directors: string[];
+      countries: string[];
+    };
+  };
+  count: number;
+}
+
+const { edition, film, count } = Astro.props;
+---
+
+<section class="relative">
+  <div class="relative min-h-[34rem] w-full overflow-hidden md:min-h-[42rem] lg:min-h-[46rem]">
+    <div class="absolute inset-0">
+      <Artwork
+        palette={film.data.palette}
+        title={film.data.title}
+        originalTitle={film.data.originalTitle}
+        year={film.data.year}
+        label={`${film.data.countries[0]} · ${film.data.directors[0]}`}
+        src={film.data.backdrop}
+        alt={`${film.data.title} 剧照`}
+        ratio="fill"
+        eager
+        plain
+      />
+    </div>
+
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(to top, #0a0a0b 2%, rgba(10,10,11,0.66) 34%, rgba(10,10,11,0.08) 100%);"
+    >
+    </div>
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(to right, rgba(10,10,11,0.78) 0%, rgba(10,10,11,0.18) 58%, rgba(10,10,11,0) 100%);"
+    >
+    </div>
+
+    <div
+      class="absolute inset-0"
+      style="background: radial-gradient(60% 55% at 78% 18%, rgba(194,162,115,0.10), transparent 70%);"
+    >
+    </div>
+
+    <div class="shell relative z-10 flex h-full min-h-[34rem] flex-col justify-end pb-12 pt-32 md:min-h-[42rem] md:pb-16 lg:min-h-[46rem]">
+      <div class="max-w-3xl">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span class="kicker">今日精选 · {issueLabel(edition.data.issue)}</span>
+          <span class="h-3 w-px bg-paper/20" aria-hidden="true"></span>
+          <span class="text-[0.68rem] uppercase tracking-[0.18em] text-paper/60">
+            {formatDate(edition.data.date)} · {formatWeekday(edition.data.date)}
+          </span>
+        </div>
+
+        <h1 class="mt-6 font-serif-cn text-[2.35rem] leading-[1.18] tracking-[0.01em] text-paper md:text-[3.6rem] lg:text-[4.1rem]">
+          {edition.data.title}
+        </h1>
+
+        <p class="mt-6 max-w-xl text-[0.92rem] leading-loose text-paper/70 md:text-[0.98rem]">
+          {edition.data.editorIntro}
+        </p>
+
+        <a
+          href={`/films/${film.slug}/`}
+          class="group mt-7 inline-flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.78rem] text-paper/85"
+        >
+          <span class="text-[0.6rem] uppercase tracking-[0.22em] text-gold/80">本期主推</span>
+          <span class="font-serif-cn text-[1.02rem] transition-colors group-hover:text-gold">
+            《{film.data.title}》
+          </span>
+          <span class="text-[0.7rem] tracking-[0.06em] text-paper/45">
+            {film.data.year} · {film.data.countries.join(' / ')} · {film.data.directors.join('、')}
+          </span>
+        </a>
+
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a
+            href={`/daily/${edition.slug}/`}
+            class="group inline-flex items-center gap-3 border border-paper/25 px-6 py-3 text-[0.72rem] uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:border-gold hover:text-gold"
+          >
+            阅读本期
+            <span class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+          </a>
+          <p class="text-[0.7rem] tracking-[0.1em] text-paper/45">
+            本期收录 {count} 部影片 · 由 AI 编辑部选片与撰稿
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pointer-events-none absolute right-8 top-28 z-10 hidden text-right md:block">
+      <p class="font-display text-[2.6rem] leading-none text-paper/15">
+        {String(edition.data.issue).padStart(3, '0')}
+      </p>
+      <p class="mt-2 font-sans text-[0.55rem] uppercase tracking-[0.3em] text-paper/35">
+        Daily Issue
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,148 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FilmCard from '../../components/FilmCard.astro';
+import { getDaily, getFilmMap } from '../../lib/content';
+import { SITE, formatDate, formatWeekday, issueLabel } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const dailies = await getDaily();
+  return dailies.map((edition, index) => ({
+    params: { slug: edition.id },
+    props: { edition, next: dailies[index - 1], prev: dailies[index + 1] },
+  }));
+}
+
+const { edition, next, prev } = Astro.props;
+const filmMap = await getFilmMap();
+const { Content } = await render(edition);
+
+const films = edition.data.films
+  .map((item) => ({ item, film: filmMap.get(item.slug) }))
+  .filter((entry): entry is { item: (typeof edition.data.films)[number]; film: NonNullable<ReturnType<typeof filmMap.get>> } => Boolean(entry.film));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: edition.data.title,
+  datePublished: edition.data.date,
+  inLanguage: 'zh-CN',
+  publisher: { '@type': 'Organization', name: SITE.name },
+  hasPart: films.map(({ film }) => ({
+    '@type': 'Movie',
+    name: film.data.title,
+    alternateName: film.data.originalTitle,
+    dateCreated: String(film.data.year),
+    director: film.data.directors.map((name) => ({ '@type': 'Person', name })),
+  })),
+};
+---
+
+<BaseLayout
+  title={edition.data.title}
+  description={edition.data.subtitle}
+  type="article"
+  publishedAt={edition.data.date}
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="shell pt-16 md:pt-24">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="kicker">Daily · {issueLabel(edition.data.issue)}</p>
+        <h1 class="mt-6 font-serif-cn text-[2.2rem] leading-[1.25] text-paper md:text-[3.2rem]">
+          {edition.data.title}
+        </h1>
+        <p class="mt-5 text-[0.9rem] leading-loose text-muted">{edition.data.subtitle}</p>
+        <p class="mt-7 text-[0.68rem] uppercase tracking-[0.18em] text-muted/80">
+          {formatDate(edition.data.date)} · {formatWeekday(edition.data.date)}
+        </p>
+      </div>
+
+      <div class="mx-auto mt-10 max-w-3xl border-y border-line-soft py-6 md:mt-12">
+        <p class="text-center text-[0.92rem] leading-loose text-paper-dim/90">
+          {edition.data.editorIntro}
+        </p>
+      </div>
+    </header>
+
+    <div class="shell mt-14 md:mt-20">
+      <div class="grid gap-x-7 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          films.map(({ item, film }, index) => (
+            <FilmCard film={film} index={index} note={item.note} />
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="shell mt-16 md:mt-20">
+      <div class="mx-auto max-w-2xl">
+        <div class="article-body">
+          <Content />
+        </div>
+
+        <section class="mt-14 border-t border-line pt-8" aria-labelledby="closing-title">
+          <h2 id="closing-title" class="kicker">编辑总结</h2>
+          <p class="mt-5 font-serif-cn text-[1.12rem] leading-loose text-paper/90">
+            {edition.data.closing}
+          </p>
+        </section>
+
+        {
+          edition.data.sources.length > 0 && (
+            <section class="mt-12 border-t border-line-soft pt-6">
+              <h2 class="kicker">本期资料来源</h2>
+              <ul class="mt-4 space-y-2 text-[0.75rem] leading-relaxed text-muted">
+                {edition.data.sources.map((source) => (
+                  <li>
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow"
+                        class="underline decoration-line underline-offset-4 hover:decoration-gold"
+                      >
+                        {source.label}
+                      </a>
+                    ) : (
+                      source.label
+                    )}
+                    {source.retrieved && <span> · 获取于 {source.retrieved}</span>}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+    </div>
+
+    <nav class="shell mt-20 border-t border-line pt-8" aria-label="刊物导航">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          {prev && (
+            <a href={`/daily/${prev.id}/`} class="group block">
+              <span class="text-[0.65rem] uppercase tracking-[0.18em] text-muted">上一期</span>
+              <span class="mt-1.5 block font-serif-cn text-lg text-paper-dim transition-colors group-hover:text-gold">
+                {prev.data.title}
+              </span>
+            </a>
+          )}
+        </div>
+        <a href="/daily/" class="text-[0.7rem] uppercase tracking-[0.16em] text-muted transition-colors hover:text-gold">
+          全部每日推荐
+        </a>
+        <div class="sm:text-right">
+          {next && (
+            <a href={`/daily/${next.id}/`} class="group block">
+              <span class="text-[0.65rem] uppercase tracking-[0.18em] text-muted">下一期</span>
+              <span class="mt-1.5 block font-serif-cn text-lg text-paper-dim transition-colors group-hover:text-gold">
+                {next.data.title}
+              </span>
+            </a>
+          )}
+        </div>
+      </div>
+    </nav>
+  </article>
+</BaseLayout>

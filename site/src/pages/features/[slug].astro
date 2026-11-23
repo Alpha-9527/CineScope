@@ -1,0 +1,94 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Artwork from '../../components/Artwork.astro';
+import { getFeatures, getFilmMap } from '../../lib/content';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const features = await getFeatures();
+  return features.map((feature) => ({
+    params: { slug: feature.id },
+    props: { feature },
+  }));
+}
+
+const { feature } = Astro.props;
+const filmMap = await getFilmMap();
+const { Content } = await render(feature);
+
+const films = feature.data.films
+  .map((slug) => filmMap.get(slug))
+  .filter((film): film is NonNullable<typeof film> => Boolean(film));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: feature.data.title,
+  description: feature.data.subtitle,
+  datePublished: feature.data.date,
+  inLanguage: 'zh-CN',
+  author: { '@type': 'Organization', name: SITE.author },
+  publisher: { '@type': 'Organization', name: SITE.name },
+};
+---
+
+<ArticleLayout
+  kicker={`专题 · ${feature.data.topic}`}
+  title={feature.data.title}
+  subtitle={feature.data.subtitle}
+  date={feature.data.date}
+  description={feature.data.subtitle}
+  sources={feature.data.sources}
+  jsonLd={jsonLd}
+>
+  <div slot="hero">
+    <Artwork
+      palette={feature.data.palette}
+      title={feature.data.topic}
+      label={`Feature · ${feature.data.date}`}
+      ratio="wide"
+      eager
+      plain
+    />
+  </div>
+
+  <div slot="meta">
+    <p class="kicker">相关影片</p>
+    <ul class="mt-5 space-y-4">
+      {
+        films.map((film) => (
+          <li class="border-l border-line pl-4">
+            <a href={`/films/${film.slug}/`} class="group block">
+              <span class="block font-serif-cn text-[0.95rem] text-paper-dim transition-colors group-hover:text-gold">
+                {film.data.title}
+              </span>
+              <span class="mt-0.5 block text-[0.68rem] uppercase tracking-[0.1em] text-muted">
+                {film.data.year} · {film.data.directors[0]}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-8 border-t border-line-soft pt-5">
+      <p class="text-[0.7rem] leading-relaxed text-muted/70">
+        专题只讨论有可靠资料支撑的维度。文中的评价属于编辑部判断，不代表外部媒体立场。
+      </p>
+    </div>
+  </div>
+
+  <Content />
+
+  <div slot="after" class="shell mt-20">
+    <div class="border-t border-line pt-8">
+      <p class="kicker">继续阅读</p>
+      <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3">
+        <a href="/features/" class="text-[0.8rem] text-paper-dim link-underline">全部专题</a>
+        <a href="/daily/" class="text-[0.8rem] text-paper-dim link-underline">每日推荐</a>
+        <a href="/magazine/" class="text-[0.8rem] text-paper-dim link-underline">每周杂志</a>
+      </div>
+    </div>
+  </div>
+</ArticleLayout>

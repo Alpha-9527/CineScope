@@ -1,0 +1,112 @@
+{
+  "name": "WF01 · 全球电影发现",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "每天 02:00 从 TMDb 按地区与年份发现候选影片，去重后写入 films。\n需要：DATABASE_URL、TMDB_API_TOKEN。",
+        "height": 200,
+        "width": 340,
+        "color": 4
+      },
+      "id": "wf01-note",
+      "name": "运行说明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 2 * * *"
+            }
+          ]
+        }
+      },
+      "id": "wf01-schedule",
+      "name": "定时触发",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs discover --limit=30 --pages=3"
+      },
+      "id": "wf01-cmd-0",
+      "name": "发现候选影片",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 120000
+    },
+    {
+      "parameters": {
+        "jsCode": "// 汇总最后一条命令的 JSON 输出，执行失败时保留 stderr 方便排查\nconst items = $input.all();\nconst last = items[items.length - 1]?.json ?? {};\nlet summary = null;\ntry {\n  summary = JSON.parse(last.stdout ?? '{}');\n} catch {\n  summary = { raw: String(last.stdout ?? '').slice(-2000) };\n}\nif (last.exitCode !== undefined && last.exitCode !== 0) {\n  throw new Error('管线命令失败：' + String(last.stderr ?? '').slice(-1500));\n}\nreturn [{ json: { summary, exitCode: last.exitCode ?? 0 } }];"
+      },
+      "id": "wf01-summary",
+      "name": "解析输出",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "定时触发": {
+      "main": [
+        [
+          {
+            "node": "发现候选影片",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "发现候选影片": {
+      "main": [
+        [
+          {
+            "node": "解析输出",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Shanghai",
+    "saveManualExecutions": true,
+    "executionTimeout": 3600
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": [
+    {
+      "name": "CineScope"
+    }
+  ],
+  "versionId": "wf01-v1",
+  "id": "WF01"
+}

@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MagazineCover from '../../components/MagazineCover.astro';
+import { getMagazines } from '../../lib/content';
+import { weekLabel } from '../../lib/site';
+
+const issues = await getMagazines();
+---
+
+<BaseLayout
+  title="每周杂志"
+  description="CineScope Weekly：每周日出版的完整电影杂志，独立主题、重新评估的片单与特别发现。"
+>
+  <div class="shell">
+    <header class="border-b border-line pb-10 pt-16 md:pb-14 md:pt-24">
+      <div class="grid gap-8 md:grid-cols-12 md:items-end">
+        <div class="md:col-span-8">
+          <p class="kicker">Magazine</p>
+          <h1 class="mt-5 font-serif-cn text-[2.4rem] leading-tight text-paper md:text-[3.6rem]">
+            CineScope Weekly
+          </h1>
+          <p class="mt-5 max-w-xl text-[0.95rem] leading-loose text-muted">
+            每周日北京时间 20:00 出版。不是每日推荐的机械汇总，而是一次独立的编辑策划：重新评估一周的候选作品，确定主题，并选出本周最值得关注的电影。
+          </p>
+        </div>
+        <div class="md:col-span-4 md:text-right">
+          <p class="font-display text-sm italic tracking-[0.08em] text-gold/80">
+            A weekly film magazine,
+            <br />
+            written by an AI editorial team.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="mt-12 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        issues.map((issue) => (
+          <div>
+            <MagazineCover issue={{ ...issue, slug: issue.id }} compact />
+            <p class="mt-3 text-[0.65rem] uppercase tracking-[0.16em] text-muted/70">
+              {weekLabel(issue.data.year, issue.data.week)} · 收录{' '}
+              {issue.data.picks.length + issue.data.specialFinds.length} 部
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

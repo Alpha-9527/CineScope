@@ -1,0 +1,45 @@
+---
+import Artwork from './Artwork.astro';
+import { formatDate } from '../lib/site';
+
+interface Props {
+  feature: {
+    slug: string;
+    data: {
+      title: string;
+      subtitle: string;
+      date: string;
+      topic: string;
+      palette: string;
+    };
+  };
+  index?: number;
+}
+
+const { feature, index } = Astro.props;
+const { data } = feature;
+---
+
+<article class="group">
+  <a href={`/features/${feature.slug}/`} class="block focus-visible:outline-none">
+    <Artwork
+      palette={data.palette}
+      title={data.topic}
+      label={index !== undefined ? `专题 ${String(index + 1).padStart(2, '0')}` : '专题'}
+      ratio="wide"
+      compact
+    />
+  </a>
+
+  <div class="pt-5">
+    <div class="flex items-center gap-3 text-[0.65rem] uppercase tracking-[0.18em] text-muted">
+      <span class="text-gold/90">{data.topic}</span>
+      <span class="h-2.5 w-px bg-line" aria-hidden="true"></span>
+      <time datetime={data.date}>{formatDate(data.date)}</time>
+    </div>
+    <h3 class="mt-3 font-serif-cn text-[1.35rem] leading-snug text-paper">
+      <a href={`/features/${feature.slug}/`} class="link-underline">{data.title}</a>
+    </h3>
+    <p class="mt-2 line-clamp-2 text-[0.83rem] leading-relaxed text-muted">{data.subtitle}</p>
+  </div>
+</article>

@@ -1,0 +1,56 @@
+---
+import { SITE } from '../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-line-soft bg-charcoal/60">
+  <div class="shell py-14 md:py-20">
+    <div class="grid gap-12 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <a href="/" class="font-display text-2xl tracking-[0.3em] text-paper">CINESCOPE</a>
+        <p class="mt-5 max-w-sm text-[0.85rem] leading-loose text-muted">
+          {SITE.description}
+        </p>
+        <p class="mt-5 font-display text-[0.8rem] italic tracking-[0.06em] text-gold/80">
+          Discover Cinema Beyond the Mainstream.
+        </p>
+      </div>
+
+      <div class="md:col-span-3">
+        <h2 class="kicker mb-5">栏目</h2>
+        <ul class="space-y-3">
+          {
+            SITE.nav.map((item) => (
+              <li>
+                <a href={item.href} class="text-[0.85rem] text-paper-dim transition-colors hover:text-gold">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="md:col-span-4">
+        <h2 class="kicker mb-5">编辑说明</h2>
+        <p class="text-[0.8rem] leading-loose text-muted">
+          CineScope 的全部公开内容由 AI 编辑部策划、撰写与校对，依据 TMDb、IMDb 官方数据集、
+          Wikidata、电影节官网与公开专业影评等可核实资料。文章中的事实、外部观点与编辑判断分别标注。
+        </p>
+        <p class="mt-4 text-[0.8rem] leading-loose text-muted">
+          电影海报与剧照版权归各发行方所有，本站仅作评介用途并注明来源。
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-14 flex flex-col gap-3 border-t border-line-soft pt-6 text-[0.7rem] tracking-[0.08em] text-muted/70 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} CineScope · 一本持续出版的电影杂志</p>
+      <div class="flex flex-wrap gap-5">
+        <a href="/about/" class="transition-colors hover:text-paper">关于我们</a>
+        <a href="/about/#privacy" class="transition-colors hover:text-paper">隐私政策</a>
+        <a href="/rss.xml" class="transition-colors hover:text-paper">RSS</a>
+      </div>
+    </div>
+  </div>
+</footer>

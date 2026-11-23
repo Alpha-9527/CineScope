@@ -1,0 +1,86 @@
+---
+import { SITE } from '../lib/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b border-line-soft bg-ink/85 backdrop-blur-md">
+  <div class="shell flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
+    <a href="/" class="group flex items-baseline gap-2.5" aria-label="CineScope 首页">
+      <span class="font-display text-[1.35rem] tracking-[0.32em] text-paper transition-colors group-hover:text-gold">
+        CINESCOPE
+      </span>
+      <span class="hidden font-sans text-[0.55rem] uppercase tracking-[0.18em] text-muted sm:block">
+        全球电影杂志
+      </span>
+    </a>
+
+    <nav class="hidden items-center gap-7 md:flex" aria-label="主导航">
+      {
+        SITE.nav.map((item) => (
+          <a
+            href={item.href}
+            class={`relative py-2 font-sans text-[0.7rem] tracking-[0.16em] transition-colors ${
+              isActive(item.href) ? 'text-paper' : 'text-muted hover:text-paper'
+            }`}
+          >
+            {item.label}
+            {isActive(item.href) && (
+              <span class="absolute -bottom-px left-0 h-px w-full bg-gold" aria-hidden="true" />
+            )}
+          </a>
+        ))
+      }
+    </nav>
+
+    <button
+      type="button"
+      id="nav-toggle"
+      class="flex h-9 w-9 flex-col items-center justify-center gap-[5px] md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      aria-label="打开导航"
+    >
+      <span class="block h-px w-5 bg-paper"></span>
+      <span class="block h-px w-5 bg-paper"></span>
+    </button>
+  </div>
+
+  <div id="mobile-nav" class="hidden border-t border-line-soft bg-ink md:hidden">
+    <nav class="shell flex flex-col py-2" aria-label="移动端导航">
+      {
+        SITE.nav.map((item) => (
+          <a
+            href={item.href}
+            class={`border-b border-line-soft/60 py-3.5 font-sans text-[0.8rem] tracking-[0.12em] last:border-0 ${
+              isActive(item.href) ? 'text-gold' : 'text-paper-dim'
+            }`}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+
+  const setOpen = (open: boolean) => {
+    if (!toggle || !panel) return;
+    panel.classList.toggle('hidden', !open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+  };
+
+  toggle?.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+</script>

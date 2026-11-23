@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDaily, getFilmMap } from '../../lib/content';
+import { formatDate, formatDateShort, issueLabel } from '../../lib/site';
+
+const dailies = await getDaily();
+const filmMap = await getFilmMap();
+---
+
+<BaseLayout
+  title="每日推荐"
+  description="CineScope 每日推荐归档：每天由 AI 编辑部选出的电影，附推荐理由与观影建议。"
+>
+  <div class="shell">
+    <header class="border-b border-line pb-10 pt-16 md:pb-14 md:pt-24">
+      <p class="kicker">Daily</p>
+      <h1 class="mt-5 font-serif-cn text-[2.4rem] leading-tight text-paper md:text-[3.6rem]">
+        每天，三部电影
+      </h1>
+      <p class="mt-5 max-w-2xl text-[0.95rem] leading-loose text-muted">
+        数量随质量调整：如果某天只有一两部作品真正值得推荐，我们就只刊出一两部。以下为已出版的每日刊物，按时间倒序排列。
+      </p>
+    </header>
+
+    <ul class="mt-4">
+      {
+        dailies.map((edition) => {
+          const films = edition.data.films
+            .map((item) => filmMap.get(item.slug))
+            .filter((film) => Boolean(film));
+          return (
+            <li class="border-b border-line-soft">
+              <a
+                href={`/daily/${edition.id}/`}
+                class="group grid gap-6 py-9 transition-colors md:grid-cols-12 md:gap-10 md:py-11"
+              >
+                <div class="md:col-span-3">
+                  <p class="font-display text-2xl tracking-[0.02em] text-paper/85">
+                    {formatDateShort(edition.data.date)}
+                  </p>
+                  <p class="mt-1.5 text-[0.65rem] uppercase tracking-[0.18em] text-muted">
+                    {issueLabel(edition.data.issue)} · {formatDate(edition.data.date)}
+                  </p>
+                </div>
+
+                <div class="md:col-span-9">
+                  <h2 class="font-serif-cn text-[1.5rem] leading-snug text-paper transition-colors group-hover:text-gold md:text-[1.8rem]">
+                    {edition.data.title}
+                  </h2>
+                  <p class="mt-2 text-[0.85rem] leading-relaxed text-muted">
+                    {edition.data.subtitle}
+                  </p>
+                  <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.72rem] tracking-[0.04em] text-paper-dim/70">
+                    {films.map((film) => (
+                      <span>{film.data.title}</span>
+                    ))}
+                  </div>
+                </div>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</BaseLayout>

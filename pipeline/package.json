@@ -1,0 +1,28 @@
+{
+  "name": "cinescope-pipeline",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CineScope AI 编辑管线：发现 → 核实 → 评估 → 撰稿 → 校对 → 出版 → 发布",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "pipeline": "node src/cli.mjs",
+    "discover": "node src/cli.mjs discover",
+    "enrich": "node src/cli.mjs enrich",
+    "assess": "node src/cli.mjs assess",
+    "write": "node src/cli.mjs write",
+    "daily": "node src/cli.mjs daily",
+    "weekly": "node src/cli.mjs weekly",
+    "publish": "node src/cli.mjs publish",
+    "seed": "node src/cli.mjs seed",
+    "maintain": "node src/cli.mjs maintain"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "pg": "^8.16.3"
+  }
+}

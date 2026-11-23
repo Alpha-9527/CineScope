@@ -1,0 +1,50 @@
+---
+import Artwork from './Artwork.astro';
+import { formatDateShort, weekLabel } from '../lib/site';
+
+interface Props {
+  issue: {
+    slug: string;
+    data: {
+      year: number;
+      week: number;
+      date: string;
+      title: string;
+      subtitle: string;
+      theme: string;
+      coverPalette: string;
+    };
+  };
+  compact?: boolean;
+}
+
+const { issue, compact = false } = Astro.props;
+const { data } = issue;
+---
+
+<a href={`/magazine/${issue.slug}/`} class="group block">
+  <div class="relative">
+    <Artwork
+      palette={data.coverPalette}
+      title={data.theme}
+      label={`Weekly · W${String(data.week).padStart(2, '0')}`}
+      year={data.year}
+      ratio="portrait"
+      eager={!compact}
+    />
+  </div>
+
+  <div class={compact ? 'pt-4' : 'pt-6'}>
+    <div class="flex items-center gap-3 text-[0.65rem] uppercase tracking-[0.18em] text-muted">
+      <span>{weekLabel(data.year, data.week)}</span>
+      <span class="h-2.5 w-px bg-line" aria-hidden="true"></span>
+      <span>{formatDateShort(data.date)}</span>
+    </div>
+    <h3
+      class={`mt-2.5 font-serif-cn leading-snug text-paper ${compact ? 'text-lg' : 'text-2xl md:text-[1.75rem]'}`}
+    >
+      {data.title}
+    </h3>
+    <p class="mt-2 line-clamp-2 text-[0.82rem] leading-relaxed text-muted">{data.subtitle}</p>
+  </div>
+</a>

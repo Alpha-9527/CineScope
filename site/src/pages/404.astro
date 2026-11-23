@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="页面不存在" description="你访问的页面不在这一期杂志里。" noindex>
+  <div class="shell flex min-h-[60vh] flex-col justify-center py-20">
+    <p class="kicker">404</p>
+    <h1 class="mt-5 font-serif-cn text-[2.2rem] leading-tight text-paper md:text-[3.2rem]">
+      这一页不在本期刊物里
+    </h1>
+    <p class="mt-5 max-w-lg text-[0.92rem] leading-loose text-muted">
+      也许是链接过期，也许是这篇文章还在校对。你可以回到首页，或者翻阅往期归档。
+    </p>
+    <div class="mt-9 flex flex-wrap gap-x-8 gap-y-3 text-[0.75rem] uppercase tracking-[0.14em]">
+      <a href="/" class="text-paper-dim link-underline">返回首页</a>
+      <a href="/daily/" class="text-paper-dim link-underline">每日推荐</a>
+      <a href="/archive/" class="text-paper-dim link-underline">往期归档</a>
+    </div>
+  </div>
+</BaseLayout>

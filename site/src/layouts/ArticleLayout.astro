@@ -1,0 +1,119 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { SITE, formatDate } from '../lib/site';
+
+interface Props {
+  kicker: string;
+  title: string;
+  originalTitle?: string;
+  subtitle?: string;
+  date?: string;
+  readingNote?: string;
+  sources?: { label: string; url?: string; retrieved?: string }[];
+  type?: 'article' | 'website';
+  description?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  kicker,
+  title,
+  originalTitle,
+  subtitle,
+  date,
+  readingNote = 'CineScope AI 编辑部',
+  sources = [],
+  type = 'article',
+  description,
+  jsonLd,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description ?? subtitle ?? title}
+  type={type}
+  publishedAt={date}
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="shell pb-10 pt-14 md:pb-14 md:pt-20">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="kicker">{kicker}</p>
+        <h1 class="mt-6 font-serif-cn text-[2.1rem] leading-[1.28] tracking-[0.01em] text-paper md:text-[3.05rem]">
+          {title}
+        </h1>
+        {originalTitle && (
+          <p class="mt-4 font-display text-base italic tracking-[0.1em] text-muted md:text-lg">
+            {originalTitle}
+          </p>
+        )}
+        {subtitle && (
+          <p class="mx-auto mt-6 max-w-2xl text-[0.95rem] leading-loose text-paper-dim/85">
+            {subtitle}
+          </p>
+        )}
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+          {date && <time datetime={date}>{formatDate(date)}</time>}
+          <span class="h-3 w-px bg-line" aria-hidden="true"></span>
+          <span>{readingNote}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell">
+      <slot name="hero" />
+    </div>
+
+    <div class="shell mt-12 md:mt-16">
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-14">
+        <aside class="order-2 lg:order-1 lg:col-span-3">
+          <div class="lg:sticky lg:top-28">
+            <slot name="meta" />
+          </div>
+        </aside>
+
+        <div class="order-1 lg:order-2 lg:col-span-8 lg:col-start-5">
+          <div class="article-body">
+            <slot />
+          </div>
+
+          {
+            sources.length > 0 && (
+              <section class="mt-16 border-t border-line pt-8" aria-labelledby="sources-title">
+                <h2 id="sources-title" class="kicker">
+                  资料来源
+                </h2>
+                <ul class="mt-5 space-y-2.5 text-[0.78rem] leading-relaxed text-muted">
+                  {sources.map((source) => (
+                    <li class="flex flex-wrap gap-x-2">
+                      {source.url ? (
+                        <a
+                          href={source.url}
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                          class="text-paper-dim underline decoration-line underline-offset-4 transition-colors hover:decoration-gold"
+                        >
+                          {source.label}
+                        </a>
+                      ) : (
+                        <span class="text-paper-dim">{source.label}</span>
+                      )}
+                      {source.retrieved && <span>· 获取于 {source.retrieved}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          <p class="mt-10 border-t border-line-soft pt-6 text-[0.72rem] leading-relaxed text-muted/70">
+            本文由 {SITE.author} 依据公开可核实资料撰写与校对。文中事实陈述、外部评论观点与编辑判断已作区分；未获可靠来源支持的内容不予刊载。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <slot name="after" />
+  </article>
+</BaseLayout>

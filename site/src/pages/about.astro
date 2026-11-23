@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site';
+
+const editorialStages = [
+  {
+    step: '01',
+    title: '选题',
+    text: '从 TMDb、IMDb 官方非商业数据集、电影节档案与各国电影资料中发现候选作品，主动平衡地区、年代、类型与语言，并记录发现理由。',
+  },
+  {
+    step: '02',
+    title: '核实',
+    text: '逐项核对原始片名、中文片名、年份、导演、演员、国家、语言、片长、奖项与影展记录。来源冲突时标记为待核实，不猜测。',
+  },
+  {
+    step: '03',
+    title: '评估',
+    text: '分别评估观众口碑 R、艺术价值 A 与推荐价值 D，并给出证据可信度 C。评分与原始平台评分严格分离。',
+  },
+  {
+    step: '04',
+    title: '撰稿',
+    text: 'AI 撰稿人依据已核实材料撰写中文文章，明确区分事实、外部观点与编辑判断，避免剧透与模板化表达。',
+  },
+  {
+    step: '05',
+    title: '校对',
+    text: '校对编辑检查事实、重复、来源缺失、过度夸大、剧透与不自然语言。未通过校验的文章不会自动发布。',
+  },
+  {
+    step: '06',
+    title: '出版',
+    text: '通过校验的内容进入静态站点构建，生成每日刊物、每周杂志与专题页面，并按记录发布。',
+  },
+];
+---
+
+<BaseLayout
+  title="关于 CineScope"
+  description="CineScope 是一本由 AI 编辑部持续出版的全球电影杂志。了解我们的编辑流程、评估方法与内容来源。"
+>
+  <div class="shell">
+    <header class="border-b border-line pb-12 pt-16 md:pb-16 md:pt-24">
+      <div class="grid gap-10 md:grid-cols-12 md:items-end">
+        <div class="md:col-span-8">
+          <p class="kicker">About</p>
+          <h1 class="mt-6 max-w-2xl font-serif-cn text-[2.3rem] leading-[1.25] text-paper md:text-[3.4rem]">
+            一本没有编辑部的电影杂志
+          </h1>
+          <p class="mt-6 max-w-xl text-[0.95rem] leading-loose text-paper-dim/85">
+            CineScope 不是电影数据库，不是搜索引擎，也不是影迷社区。它只做一件事：从全球电影中主动发现值得观看的作品，并以杂志的形式持续介绍给读者。
+          </p>
+        </div>
+        <div class="md:col-span-4">
+          <p class="font-display text-lg italic leading-relaxed tracking-[0.04em] text-gold/80">
+            Discover Cinema
+            <br />
+            Beyond the Mainstream.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="mt-16 grid gap-12 md:grid-cols-12 md:gap-16">
+      <div class="md:col-span-4">
+        <h2 class="kicker">我们在做什么</h2>
+      </div>
+      <div class="md:col-span-8">
+        <div class="article-body max-w-2xl">
+          <p>
+            每天北京时间 09:00，CineScope 出版一期每日推荐，通常收录三部电影；如果当天只有一两部作品真正达到标准，我们就只刊出一两部。每周日 20:00，编辑部重新评估一周的候选作品，出版一期有独立主题的周刊。
+          </p>
+          <p>
+            我们不把票房、热搜或单一平台评分当作推荐依据，也不把英语电影作为默认中心。每部被推荐的作品，都必须说明它为什么值得今天被看见。
+          </p>
+          <p>
+            网站不设站内搜索、账号、评论与个性化推荐。你打开它，就像翻开一本杂志——由编辑决定内容，而不是由算法猜测你想看什么。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-20 md:mt-24">
+      <div class="grid gap-12 md:grid-cols-12 md:gap-16">
+        <div class="md:col-span-4">
+          <h2 class="kicker">编辑流程</h2>
+          <p class="mt-5 max-w-xs text-[0.82rem] leading-loose text-muted">
+            全部公开文字由 AI 生成，但每一个环节都受明确规范约束。
+          </p>
+        </div>
+        <div class="md:col-span-8">
+          <ol class="grid gap-x-8 gap-y-10 sm:grid-cols-2">
+            {
+              editorialStages.map((stage) => (
+                <li class="border-t border-line pt-5">
+                  <span class="font-display text-[0.75rem] tracking-[0.2em] text-gold/70">{stage.step}</span>
+                  <h3 class="mt-2 font-serif-cn text-lg text-paper">{stage.title}</h3>
+                  <p class="mt-2 text-[0.82rem] leading-loose text-muted">{stage.text}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-20 md:mt-24">
+      <div class="grid gap-12 md:grid-cols-12 md:gap-16">
+        <div class="md:col-span-4">
+          <h2 class="kicker">质量评估</h2>
+        </div>
+        <div class="md:col-span-8">
+          <div class="article-body max-w-2xl">
+            <p>
+              每部电影会得到三个独立维度的评分：观众口碑 <strong>R</strong>、艺术价值 <strong>A</strong>、推荐价值 <strong>D</strong>，以及一个证据可信度 <strong>C</strong>。
+            </p>
+            <blockquote>
+              综合评价 Q = 0.35R + 0.40A + 0.25D；最终分 S = Q × C。
+            </blockquote>
+            <p>
+              可信度低不代表电影差，只代表证据不足；某一维度缺失时，我们对已有维度重新归一化权重，而不是简单填零。IMDb 评分低不能单独淘汰一部电影，电影节获奖也不能直接等同于艺术质量。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-20 md:mt-24">
+      <div class="grid gap-12 md:grid-cols-12 md:gap-16">
+        <div class="md:col-span-4">
+          <h2 class="kicker">内容来源</h2>
+        </div>
+        <div class="md:col-span-8">
+          <div class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+            <div>
+              <h3 class="font-serif-cn text-lg text-paper">基础事实</h3>
+              <p class="mt-2 text-[0.82rem] leading-loose text-muted">
+                TMDb 提供影片信息、海报与剧照；IMDb 官方非商业数据集补充评分与票数；Wikidata 辅助人物、国家与多语言片名。所有数据均遵守各自的使用条款与署名要求。
+              </p>
+            </div>
+            <div>
+              <h3 class="font-serif-cn text-lg text-paper">评论与分析</h3>
+              <p class="mt-2 text-[0.82rem] leading-loose text-muted">
+                参考戛纳、柏林、威尼斯、圣丹斯、多伦多等电影节官方档案，以及可靠的专业电影媒体与创作团队公开访谈。来源必须记录，未经证实的内容不作为事实使用。
+              </p>
+            </div>
+          </div>
+          <p class="mt-8 border-l border-gold-dim/60 pl-4 text-[0.8rem] leading-loose text-paper-dim/80">
+            我们不能假装看过一部电影。所有分析都基于公开可核实的资料，并清楚标注哪些是事实、哪些是外部观点、哪些是编辑部的判断。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-20 md:mt-24">
+      <div class="grid gap-12 md:grid-cols-12 md:gap-16">
+        <div class="md:col-span-4">
+          <h2 class="kicker">署名</h2>
+        </div>
+        <div class="md:col-span-8">
+          <div class="article-body max-w-2xl">
+            <p>
+              本站文章统一署名 <strong>CineScope Editorial</strong> 或 <strong>CineScope AI Editorial Team</strong>。CineScope 不存在人类主编或人类影评人，我们不会虚构作者身份。
+            </p>
+            <p>
+              若文章出现错误，欢迎通过站点仓库提交更正请求。我们会在核实后修订，并保留修订记录。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" class="mt-20 scroll-mt-24 md:mt-24">
+      <div class="grid gap-12 md:grid-cols-12 md:gap-16">
+        <div class="md:col-span-4">
+          <h2 class="kicker">隐私政策</h2>
+        </div>
+        <div class="md:col-span-8">
+          <div class="article-body max-w-2xl">
+            <p>
+              CineScope 是静态网站，不要求注册、登录，也不设置评论、收藏或个性化推荐。我们不在浏览器中存储个人资料，不进行跨站追踪。
+            </p>
+            <p>
+              站点通过 Cloudflare Pages 托管，托管服务商可能按行业惯例记录访问日志（如 IP、User-Agent）用于安全与性能分析。字体资源由 Google Fonts 提供，加载时会向该服务发起请求。除此之外，本站不向第三方发送读者数据。
+            </p>
+            <p>
+              外部链接（如电影节官网、资料来源页面）适用各自站点的隐私政策，本站不对其内容负责。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-20 pb-4 md:mt-24">
+      <div class="grid gap-12 md:grid-cols-12 md:gap-16">
+        <div class="md:col-span-4">
+          <h2 class="kicker">版权与图片来源</h2>
+        </div>
+        <div class="md:col-span-8">
+          <div class="article-body max-w-2xl">
+            <p>
+              电影海报、剧照与相关影像资料的版权归各制片方与发行方所有。CineScope 仅在评论、介绍与报道目的下使用，并尽量通过 TMDb 官方图片 CDN 引用，不擅自批量下载或重新分发。
+            </p>
+            <p>
+              站内文章由 AI 编辑部生成，采用 <strong>CC BY-NC 4.0</strong> 协议共享：欢迎在注明来源与链接的前提下非商业转载。
+            </p>
+            <p class="text-[0.8rem] text-muted">
+              当前站点为第一版演示环境，部分影片元数据为样例值；接入 TMDb / IMDb 数据集后将自动替换为核实数据。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-16 border-t border-line py-8">
+      <p class="font-display text-sm italic tracking-[0.1em] text-gold/70">
+        {SITE.name} — Discover Cinema Beyond the Mainstream.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

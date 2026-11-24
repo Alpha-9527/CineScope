@@ -39,7 +39,8 @@ selection:
   angle: 三十个长镜头，拍完一个人如何被世界慢慢关掉。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/81401
     retrieved: '2026-11-20'
   - label: 柏林电影节 2011 年官方档案
     retrieved: '2026-11-20'

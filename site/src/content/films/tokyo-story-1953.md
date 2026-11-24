@@ -41,7 +41,8 @@ selection:
   angle: 最平静的镜头，拍出最不忍心承认的疏远。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/18148
     retrieved: '2026-11-19'
   - label: 电影旬报 1953 年度十佳记录
     retrieved: '2026-11-19'

@@ -44,7 +44,8 @@ selection:
   angle: 把阶级的愤怒拍成一场始终没有发生的犯罪。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/491584
     retrieved: '2026-11-20'
   - label: 戛纳电影节 2018 年官方档案
     retrieved: '2026-11-20'

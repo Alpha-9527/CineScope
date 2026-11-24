@@ -42,7 +42,8 @@ selection:
   angle: 没有反派，只有各自成立的理由。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/60243
     retrieved: '2026-11-19'
   - label: 柏林电影节 2011 年官方档案
     retrieved: '2026-11-19'

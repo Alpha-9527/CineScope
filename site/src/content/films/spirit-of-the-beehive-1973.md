@@ -42,7 +42,8 @@ selection:
   angle: 用孩子的眼睛，看见一个刚刚开始沉默的国家。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/4495
     retrieved: '2026-11-20'
   - label: 圣塞巴斯蒂安电影节 1973 年官方档案
     retrieved: '2026-11-20'

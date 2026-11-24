@@ -42,7 +42,8 @@ selection:
   angle: 在被占领的城市里，日常生活本身就是一种抵抗。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/265228
     retrieved: '2026-11-19'
   - label: 戛纳电影节 2014 年官方档案
     retrieved: '2026-11-19'

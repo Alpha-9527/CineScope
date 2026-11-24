@@ -44,7 +44,8 @@ selection:
   angle: 一个不说话的女人，如何用一架钢琴谈条件。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/713
     retrieved: '2026-11-20'
   - label: 戛纳电影节 1993 年官方档案
     retrieved: '2026-11-20'

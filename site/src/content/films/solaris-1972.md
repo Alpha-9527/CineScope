@@ -42,7 +42,8 @@ selection:
   angle: 把科幻从"征服宇宙"拉回到人心里最不愿承认的那部分。
 dataStatus: verified
 sources:
-  - label: TMDb 影片资料（接入 API 后自动补全来源链接）
+  - label: TMDb 影片资料
+    url: https://www.themoviedb.org/movie/593
     retrieved: '2026-11-20'
   - label: 戛纳电影节 1972 年官方档案
     retrieved: '2026-11-20'

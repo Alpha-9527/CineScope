@@ -4,7 +4,7 @@ originalTitle: 東京物語
 year: 1953
 countries:
   - 日本
-language: 英语
+language: 日语
 runtime: 136
 directors:
   - 小津安二郎

@@ -7,7 +7,7 @@ countries:
   - 瑞士
   - 法国
   - 德国
-language: 德语
+language: 匈牙利语
 runtime: 155
 directors:
   - 贝拉·塔尔

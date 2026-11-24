@@ -5,7 +5,7 @@ year: 2018
 countries:
   - 韩国
   - 日本
-language: 英语
+language: 韩语
 runtime: 148
 directors:
   - 李沧东

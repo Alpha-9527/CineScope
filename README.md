@@ -128,7 +128,7 @@ git remote add origin git@github.com:<you>/cinescope.git
 | `wf05-每日刊物.json` | 每天 06:30 | `daily --publish`（生成并标记发布） |
 | `wf06-每周杂志.json` | 周日 20:00 | `weekly --publish`（生成并标记发布） |
 | `wf07-静态站点发布.json` | 每天 09:30 或手动 | `publish --commit`（提交）；宿主机负责推送 |
-| `wf08-数据库维护.json` | 周日 03:30 | `pg_dump` 备份 + `maintain` |
+| `wf08-数据库维护.json` | 周日 03:30 | `maintain`（备份由宿主机 cron 执行） |
 
 ### AI 任务的运行时段
 
@@ -153,6 +153,19 @@ WF07 只做「导出 Markdown + git commit」，推送由宿主机定时任务�
 4. 推送后由 Cloudflare Pages 自动构建；如需手动触发，另配 `CLOUDFLARE_DEPLOY_HOOK` 并在宿主机执行 `publish --deploy`。
 
 若希望容器直接推送，需为 n8n 单独生成一把仅限该仓库的 deploy key 并以**单文件**方式挂载，或改用 GitHub fine-grained token + HTTPS remote；不要把整个 `~/.ssh` 挂进容器。
+
+### 数据库备份
+
+n8n 容器是 Alpine 镜像，没有 `pg_dump`，所以备份放在宿主机执行：
+
+```bash
+scripts/backup-db.sh          # 手动备份一次
+
+# cron：每周日 03:40 自动执行
+40 3 * * 0 /path/to/cinescope/scripts/backup-db.sh >> /tmp/cinescope-backup.log 2>&1
+```
+
+产物写入仓库 `backups/`（已在 `.gitignore` 中忽略），命名 `cinescope-YYYY-MM-DD.sql.gz`，保留 8 周（56 天）。WF08 只负责 `maintain` 一致性检查。
 
 导入方式：n8n → Workflows → Import from File（或容器内 `n8n import:workflow --input=...`）。工作流 JSON 默认 `active: false`，确认路径与凭证后逐条启用；本服务器已启用全部 8 条。
 

@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "每周日 03:30 备份数据库并做一致性检查。\n只清理日志与过期渠道数据，不删除正式文章和已出版刊物。",
+        "content": "每周日 03:30 做一致性检查，只清理日志与过期渠道数据，不删除正式文章和已出版刊物。\n数据库备份由宿主机 cron 每周执行（n8n 容器未安装 pg_dump），产物在 /opt/cinescope/backups，保留 8 周。",
         "height": 200,
         "width": 340,
         "color": 4
@@ -39,27 +39,14 @@
     },
     {
       "parameters": {
-        "command": "cd /opt/cinescope && mkdir -p backups && if command -v pg_dump >/dev/null 2>&1; then set -a && . ./.env && set +a && pg_dump \"$DATABASE_URL\" | gzip > \"backups/cinescope-$(date +%F).sql.gz\" && ls -lh backups | tail -n 5; else echo '{\"backup\":\"skipped\",\"reason\":\"pg_dump not installed in n8n container\"}'; fi"
-      },
-      "id": "wf08-cmd-0",
-      "name": "备份数据库",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        220,
-        0
-      ]
-    },
-    {
-      "parameters": {
         "command": "cd /opt/cinescope/pipeline && node src/cli.mjs maintain --log-days=180 --availability-days=180"
       },
-      "id": "wf08-cmd-1",
+      "id": "wf08-cmd-0",
       "name": "一致性检查",
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        440,
+        220,
         0
       ]
     },
@@ -72,24 +59,13 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        660,
+        440,
         0
       ]
     }
   ],
   "connections": {
     "定时触发": {
-      "main": [
-        [
-          {
-            "node": "备份数据库",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "备份数据库": {
       "main": [
         [
           {

@@ -202,13 +202,8 @@ const WORKFLOWS = [
     id: 'wf08',
     name: 'WF08 · 数据库维护',
     cron: '30 3 * * 0',
-    description: '每周日 03:30 备份数据库并做一致性检查。\n只清理日志与过期渠道数据，不删除正式文章和已出版刊物。',
+    description: '每周日 03:30 做一致性检查，只清理日志与过期渠道数据，不删除正式文章和已出版刊物。\n数据库备份由宿主机 cron 每周执行（n8n 容器未安装 pg_dump），产物在 /opt/cinescope/backups，保留 8 周。',
     steps: [
-      {
-        name: '备份数据库',
-        command:
-          'cd /opt/cinescope && mkdir -p backups && if command -v pg_dump >/dev/null 2>&1; then set -a && . ./.env && set +a && pg_dump "$DATABASE_URL" | gzip > "backups/cinescope-$(date +%F).sql.gz" && ls -lh backups | tail -n 5; else echo \'{"backup":"skipped","reason":"pg_dump not installed in n8n container"}\'; fi',
-      },
       { name: '一致性检查', command: `${PIPELINE} maintain --log-days=180 --availability-days=180` },
     ],
   }),

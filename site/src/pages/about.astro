@@ -182,7 +182,7 @@ const editorialStages = [
               CineScope 是静态网站，不要求注册、登录，也不设置评论、收藏或个性化推荐。我们不在浏览器中存储个人资料，不进行跨站追踪。
             </p>
             <p>
-              站点通过 Cloudflare Pages 托管，托管服务商可能按行业惯例记录访问日志（如 IP、User-Agent）用于安全与性能分析。字体资源由 Google Fonts 提供，加载时会向该服务发起请求。除此之外，本站不向第三方发送读者数据。
+              站点通过 Cloudflare Pages 托管，托管服务商可能按行业惯例记录访问日志（如 IP、User-Agent）用于安全与性能分析。字体资源由 Google Fonts 提供，站内图片经第三方图像代理 wsrv.nl 加载，上述服务在响应请求时会接收访问者的 IP 与请求信息。除此之外，本站不向第三方发送读者数据。
             </p>
             <p>
               外部链接（如电影节官网、资料来源页面）适用各自站点的隐私政策，本站不对其内容负责。
@@ -200,13 +200,16 @@ const editorialStages = [
         <div class="md:col-span-8">
           <div class="article-body max-w-2xl">
             <p>
-              电影海报、剧照与相关影像资料的版权归各制片方与发行方所有。CineScope 仅在评论、介绍与报道目的下使用，并尽量通过 TMDb 官方图片 CDN 引用，不擅自批量下载或重新分发。
+              电影海报、剧照与相关影像资料的版权归各制片方与发行方所有，CineScope 不主张任何权利，仅在评论、介绍与报道目的下引用，不擅自批量下载或重新分发。
+            </p>
+            <p>
+              影片元数据与图片来自 <strong>TMDb</strong>（图片经由其官方 CDN <code>image.tmdb.org</code>），评分与票数参考 <strong>IMDb</strong> 官方非商业数据集；两者的使用均遵守各自的服务条款与署名要求。
+            </p>
+            <p>
+              由于上述图片 CDN 在部分地区（尤其中国大陆）加载缓慢，站内图片统一经开源图像代理 <strong>wsrv.nl</strong> 中转：由该服务的 Cloudflare 边缘节点缓存，并转换为 WebP 格式后返回。代理只做传输、缩放与格式转换，不修改图片内容，也不改变版权归属。
             </p>
             <p>
               站内文章由 AI 编辑部生成，采用 <strong>CC BY-NC 4.0</strong> 协议共享：欢迎在注明来源与链接的前提下非商业转载。
-            </p>
-            <p class="text-[0.8rem] text-muted">
-              当前站点为第一版演示环境，部分影片元数据为样例值；接入 TMDb / IMDb 数据集后将自动替换为核实数据。
             </p>
           </div>
         </div>

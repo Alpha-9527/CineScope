@@ -1,4 +1,6 @@
 ---
+import { proxyImage } from '../lib/image';
+
 interface Props {
   palette?: string;
   title: string;
@@ -8,6 +10,7 @@ interface Props {
   src?: string;
   alt?: string;
   ratio?: 'poster' | 'wide' | 'square' | 'portrait' | 'fill';
+  width?: number;
   eager?: boolean;
   class?: string;
   compact?: boolean;
@@ -23,6 +26,7 @@ const {
   src,
   alt,
   ratio = 'poster',
+  width,
   eager = false,
   class: className = '',
   compact = false,
@@ -37,6 +41,17 @@ const ratioClass = {
   fill: 'h-full w-full',
 }[ratio];
 
+// 按展示尺寸取图，代理端不会放大超过原图
+const defaultWidth = {
+  poster: 500,
+  wide: 1280,
+  square: 600,
+  portrait: 800,
+  fill: 1600,
+}[ratio];
+
+const imageSrc = proxyImage(src, { width: width ?? defaultWidth });
+
 const isWide = ratio === 'wide' || ratio === 'fill';
 const glyph = title.trim().charAt(0);
 const glyphClass = isWide
@@ -48,11 +63,12 @@ const glyphClass = isWide
   {
     src ? (
       <img
-        src={src}
+        src={imageSrc}
         alt={alt ?? `${title} 剧照`}
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"
         fetchpriority={eager ? 'high' : 'auto'}
+        referrerpolicy="no-referrer"
         class="absolute inset-0 z-[1] h-full w-full object-cover"
       />
     ) : (

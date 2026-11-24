@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "每周日 20:00 独立策划本期主题、片单与特别发现，然后发布。\n周刊不是每日内容的机械汇总。",
+        "content": "每周日 20:00 独立策划本期主题、片单与特别发现。\n周日全天属于 DeepSeek 空闲时段，价格约为高峰一半。\n推送仍由 WF07 在次日 09:30 统一完成。\n周刊不是每日内容的机械汇总。",
         "height": 200,
         "width": 340,
         "color": 4
@@ -52,19 +52,6 @@
     },
     {
       "parameters": {
-        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs publish --commit --build --deploy"
-      },
-      "id": "wf06-cmd-1",
-      "name": "构建并部署",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        440,
-        0
-      ]
-    },
-    {
-      "parameters": {
         "jsCode": "// 汇总最后一条命令的 JSON 输出，执行失败时保留 stderr 方便排查\nconst items = $input.all();\nconst last = items[items.length - 1]?.json ?? {};\nlet summary = null;\ntry {\n  summary = JSON.parse(last.stdout ?? '{}');\n} catch {\n  summary = { raw: String(last.stdout ?? '').slice(-2000) };\n}\nif (last.exitCode !== undefined && last.exitCode !== 0) {\n  throw new Error('管线命令失败：' + String(last.stderr ?? '').slice(-1500));\n}\nreturn [{ json: { summary, exitCode: last.exitCode ?? 0 } }];"
       },
       "id": "wf06-summary",
@@ -72,7 +59,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        660,
+        440,
         0
       ]
     }
@@ -90,17 +77,6 @@
       ]
     },
     "生成周刊": {
-      "main": [
-        [
-          {
-            "node": "构建并部署",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "构建并部署": {
       "main": [
         [
           {

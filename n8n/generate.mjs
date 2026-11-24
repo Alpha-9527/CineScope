@@ -178,22 +178,16 @@ const WORKFLOWS = [
   build({
     id: 'wf05',
     name: 'WF05 · 每日刊物',
-    cron: '0 9 * * *',
-    description: '每天 09:00 生成当日推荐并发布站点。\n若当天候选质量不足，管线会自动少选，不会凑数。\n需要：数据库、DeepSeek、Cloudflare Deploy Hook。',
-    steps: [
-      { name: '生成每日刊物', command: `${PIPELINE} daily --publish` },
-      { name: '构建并部署', command: `${PIPELINE} publish --commit --build --deploy` },
-    ],
+    cron: '30 6 * * *',
+    description: '每天 06:30（DeepSeek 空闲时段，价格约为高峰一半）生成当日推荐。\n09:30 由 WF07 导出并推送，站点上线时间不变。\n若当天候选质量不足，管线会自动少选，不会凑数。\n需要：数据库、DeepSeek。',
+    steps: [{ name: '生成每日刊物', command: `${PIPELINE} daily --publish` }],
   }),
   build({
     id: 'wf06',
     name: 'WF06 · 每周杂志',
     cron: '0 20 * * 0',
-    description: '每周日 20:00 独立策划本期主题、片单与特别发现，然后发布。\n周刊不是每日内容的机械汇总。',
-    steps: [
-      { name: '生成周刊', command: `${PIPELINE} weekly --publish` },
-      { name: '构建并部署', command: `${PIPELINE} publish --commit --build --deploy` },
-    ],
+    description: '每周日 20:00 独立策划本期主题、片单与特别发现。\n周日全天属于 DeepSeek 空闲时段，价格约为高峰一半。\n推送仍由 WF07 在次日 09:30 统一完成。\n周刊不是每日内容的机械汇总。',
+    steps: [{ name: '生成周刊', command: `${PIPELINE} weekly --publish` }],
   }),
   build({
     id: 'wf07',

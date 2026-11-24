@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "把已发布内容导出为 Markdown，提交 Git 并触发 Cloudflare Pages。\n构建失败时不会覆盖线上版本；publish_logs 保留记录。",
+        "content": "把已发布内容导出为 Markdown 并提交到 Git；宿主机定时任务（每 10 分钟）推送后，Cloudflare Pages 自动构建上线。\n容器内不安装 SSH 私钥、不执行 npm build：构建交给 Cloudflare，失败时线上保持上一个正常版本。\npublish_logs 保留每次导出的记录。",
         "height": 200,
         "width": 340,
         "color": 4
@@ -50,10 +50,10 @@
     },
     {
       "parameters": {
-        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs publish --commit --build --deploy"
+        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs publish --commit"
       },
       "id": "wf07-cmd-0",
-      "name": "导出并部署",
+      "name": "导出并提交",
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
@@ -80,7 +80,7 @@
       "main": [
         [
           {
-            "node": "导出并部署",
+            "node": "导出并提交",
             "type": "main",
             "index": 0
           }
@@ -91,14 +91,14 @@
       "main": [
         [
           {
-            "node": "导出并部署",
+            "node": "导出并提交",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "导出并部署": {
+    "导出并提交": {
       "main": [
         [
           {

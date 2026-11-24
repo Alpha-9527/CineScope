@@ -23,7 +23,7 @@ const HELP = `CineScope AI 编辑管线
   proofread   重新校对处于 draft/review 的文章
   daily       生成某日的每日推荐（2–3 部影片 + 导语）
   weekly      生成某周的周刊（主题 + 片单 + 特别发现）
-  publish     把已批准内容导出为站点 Markdown，可提交 / 构建 / 部署
+  publish     把已批准内容导出为站点 Markdown，可提交 / 推送 / 构建 / 部署
   seed        把站点现有 Markdown 反向导入数据库
   maintain    一致性检查与历史数据清理
   imdb        手动录入某部影片的 IMDb 评分
@@ -40,7 +40,7 @@ const HELP = `CineScope AI 编辑管线
   proofread  --limit=5
   daily      --date=YYYY-MM-DD --min-score=66 --ignore-recent-days=21 --publish
   weekly     --year=2026 --week=47 --date=YYYY-MM-DD --publish
-  publish    --commit --build --deploy
+  publish    --commit --push --build --deploy
   seed       --dry-run
   maintain   --log-days=180 --availability-days=180
   imdb       --slug=<film-slug> --score=8.1 --votes=120000 --url=<IMDb 链接>
@@ -63,7 +63,7 @@ const HELP = `CineScope AI 编辑管线
   npm run write -- --limit=5
   npm run daily -- --publish
   npm run weekly -- --publish
-  npm run publish -- --commit --build --deploy
+  npm run publish -- --commit --push
 `;
 
 const COMMANDS = {
@@ -125,11 +125,12 @@ const COMMANDS = {
       }),
   },
   publish: {
-    allowed: ['commit', 'build', 'deploy'],
+    allowed: ['commit', 'push', 'build', 'deploy'],
     run: (o) =>
       runPublish({
         dryRun: Boolean(o.dryRun),
         commit: Boolean(o.commit),
+        push: Boolean(o.push),
         build: Boolean(o.build),
         deploy: Boolean(o.deploy),
       }),

@@ -81,7 +81,7 @@ node src/cli.mjs assess --limit=20
 node src/cli.mjs write --limit=6
 node src/cli.mjs daily --publish          # 生成今天的每日刊物
 node src/cli.mjs weekly --publish         # 生成本周周刊
-node src/cli.mjs publish --commit --build --deploy
+node src/cli.mjs publish --commit --push   # 导出 + 提交 + 推送（本机执行）
 node src/cli.mjs maintain --dry-run       # 一致性检查
 ```
 
@@ -91,10 +91,20 @@ node src/cli.mjs maintain --dry-run       # 一致性检查
 
 ```
 PostgreSQL → pipeline publish → site/src/content/**.md
-           → git commit → Astro build → Cloudflare Deploy Hook
+           → git commit → git push（宿主机定时任务）
+           → Cloudflare Pages 自动构建 → 上线
 ```
 
-`publish` 只导出 `approved / published` 的内容，导出后把状态回写为 `published` 并记录 `publish_logs`。构建失败时命令以非零码退出，不会覆盖 Cloudflare 上的最后一个正常版本。
+`publish` 只导出 `approved / published` 的内容，导出后把状态回写为 `published` 并记录 `publish_logs`。可用开关：
+
+| 参数 | 作用 |
+| --- | --- |
+| `--commit` | `git add` 内容文件并提交 |
+| `--push` | 提交后推送到 `origin` 当前分支 |
+| `--build` | 本地执行 `npm run build`（需要 glibc 环境的 Node，容器内不适用） |
+| `--deploy` | 调用 `CLOUDFLARE_DEPLOY_HOOK`（仓库已连 Pages 自动构建时可不加） |
+
+推送触发 Cloudflare 构建；构建失败时线上保持最后一个正常版本。
 
 `--commit` 需要项目本身是一个 Git 仓库并已配置远端：
 
@@ -115,12 +125,32 @@ git remote add origin git@github.com:<you>/cinescope.git
 | `wf02-电影资料补全.json` | 每天 02:30 | `enrich` |
 | `wf03-AI-质量评估.json` | 每天 03:00 | `assess` |
 | `wf04-AI-编辑撰稿.json` | 每天 04:00 | `write` |
-| `wf05-每日刊物.json` | 每天 09:00 | `daily --publish` → `publish --commit --build --deploy` |
-| `wf06-每周杂志.json` | 周日 20:00 | `weekly --publish` → `publish --commit --build --deploy` |
-| `wf07-静态站点发布.json` | 每天 09:30 或手动 | `publish --commit --build --deploy` |
+| `wf05-每日刊物.json` | 每天 09:00 | `daily --publish`（生成并标记发布） |
+| `wf06-每周杂志.json` | 周日 20:00 | `weekly --publish`（生成并标记发布） |
+| `wf07-静态站点发布.json` | 每天 09:30 或手动 | `publish --commit`（提交）；宿主机负责推送 |
 | `wf08-数据库维护.json` | 周日 03:30 | `pg_dump` 备份 + `maintain` |
 
-导入方式：n8n → Workflows → Import from File。所有工作流默认 `active: false`，确认路径与凭证后逐条启用。
+### WF07 自动提交
+
+WF07 只做「导出 Markdown + git commit」，推送由宿主机定时任务完成，原因是 n8n 容器内不放置 SSH 私钥，也不执行 `npm run build`（容器为 Alpine/musl，而 `node_modules` 的原生模块按 glibc 安装）。
+
+需要满足的条件：
+
+1. 项目目录已挂载到容器 `/opt/cinescope`，且 `.git` 对容器用户（uid 1000）可写；
+2. 仓库内已设置提交身份（与宿主机共用 `.git/config`）：
+   ```bash
+   git config user.name "CineScope Bot"
+   git config user.email "bot@cinescope.local"
+   ```
+3. 宿主机定时推送（每 10 分钟）：
+   ```
+   */10 * * * * cd /opt/cinescope && git push origin main >> /tmp/cinescope-push.log 2>&1
+   ```
+4. 推送后由 Cloudflare Pages 自动构建；如需手动触发，另配 `CLOUDFLARE_DEPLOY_HOOK` 并在宿主机执行 `publish --deploy`。
+
+若希望容器直接推送，需为 n8n 单独生成一把仅限该仓库的 deploy key 并以**单文件**方式挂载，或改用 GitHub fine-grained token + HTTPS remote；不要把整个 `~/.ssh` 挂进容器。
+
+导入方式：n8n → Workflows → Import from File（或容器内 `n8n import:workflow --input=...`）。工作流 JSON 默认 `active: false`，确认路径与凭证后逐条启用；本服务器已启用全部 8 条。
 
 默认命令路径为 `/opt/cinescope/pipeline`，若部署目录不同，导入后统一修改 Execute Command 节点。工作流通过服务器的 `.env` 读取密钥，不在 n8n 中保存明文。
 

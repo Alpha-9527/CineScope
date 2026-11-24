@@ -372,6 +372,22 @@ function git(args) {
   return spawnSync('git', args, { cwd: REPO_ROOT, encoding: 'utf8' });
 }
 
+function pushCommit() {
+  const branchResult = git(['rev-parse', '--abbrev-ref', 'HEAD']);
+  const branch = (branchResult.stdout ?? '').trim() || 'main';
+  const result = spawnSync('git', ['push', 'origin', `HEAD:${branch}`], {
+    cwd: REPO_ROOT,
+    encoding: 'utf8',
+    timeout: 120_000,
+    env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
+  });
+  if (result.status !== 0) {
+    throw new Error(`git push 失败：${(result.stderr || result.stdout || '').slice(-1200)}`);
+  }
+  const sha = git(['rev-parse', 'HEAD']).stdout.trim();
+  return { pushed: true, branch, sha };
+}
+
 async function commitContent(relativePaths) {
   if (relativePaths.length === 0) return { committed: false, sha: null };
 
@@ -423,6 +439,7 @@ async function triggerDeploy() {
 export async function runPublish({
   dryRun = false,
   commit = false,
+  push = false,
   build = false,
   deploy = false,
 } = {}) {
@@ -455,9 +472,11 @@ export async function runPublish({
   });
 
   const output = { ...summary };
+  let stage = 'git';
 
   try {
     if (commit) {
+      stage = 'git';
       const relative = all.map((item) => path.relative(REPO_ROOT, item.path));
       const result = await commitContent(relative);
       output.git = result;
@@ -471,6 +490,7 @@ export async function runPublish({
     }
 
     if (build) {
+      stage = 'site';
       output.build = buildSite();
       await logPublish({
         target: 'site',
@@ -481,13 +501,26 @@ export async function runPublish({
       });
     }
 
+    if (push) {
+      stage = 'git';
+      output.push = pushCommit();
+      await logPublish({
+        target: 'git',
+        status: 'success',
+        reference: `pushed ${output.push.branch}`,
+        detail: { sha: output.push.sha },
+        commitSha: output.push.sha,
+      });
+    }
+
     if (deploy) {
+      stage = 'cloudflare';
       output.deploy = { status: await triggerDeploy() };
       await logPublish({ target: 'cloudflare', status: 'success', reference: env.siteUrl });
     }
   } catch (error) {
     await logPublish({
-      target: deploy ? 'cloudflare' : build ? 'site' : 'git',
+      target: stage,
       status: 'failed',
       reference: null,
       detail: output,

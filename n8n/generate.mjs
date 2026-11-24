@@ -199,9 +199,10 @@ const WORKFLOWS = [
     id: 'wf07',
     name: 'WF07 · 静态站点发布',
     cron: '30 9 * * *',
-    description: '把已发布内容导出为 Markdown，提交 Git 并触发 Cloudflare Pages。\n构建失败时不会覆盖线上版本；publish_logs 保留记录。',
+    description:
+      '把已发布内容导出为 Markdown 并提交到 Git；宿主机定时任务（每 10 分钟）推送后，Cloudflare Pages 自动构建上线。\n容器内不安装 SSH 私钥、不执行 npm build：构建交给 Cloudflare，失败时线上保持上一个正常版本。\npublish_logs 保留每次导出的记录。',
     manual: true,
-    steps: [{ name: '导出并部署', command: `${PIPELINE} publish --commit --build --deploy` }],
+    steps: [{ name: '导出并提交', command: `${PIPELINE} publish --commit` }],
   }),
   build({
     id: 'wf08',

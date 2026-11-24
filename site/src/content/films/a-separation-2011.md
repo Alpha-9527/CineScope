@@ -4,6 +4,7 @@ originalTitle: جدایی نادر از سیمین
 year: 2011
 countries:
   - 伊朗
+  - 法国
 language: 波斯语
 runtime: 123
 directors:
@@ -11,12 +12,21 @@ directors:
 cast:
   - 佩曼·莫阿迪
   - 蕾拉·哈塔米
+  - 谢哈布·侯赛尼
   - 萨瑞·巴亚特
-  - 沙哈布·侯赛尼
+  - 萨日娜·法哈蒂
+  - 阿里-阿斯加尔·沙赫巴吉
+  - 梅里拉·扎雷
+  - 巴巴克·卡里米
+  - 基米亚·侯赛尼
+  - Armine Zeytounchian
 genres:
   - 剧情
-  - 家庭
 palette: ash
+poster: https://image.tmdb.org/t/p/w500/oGycVojde8AEF5gGTdGtYTKeEOW.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/vSQ2FK4LzevXeHeXvEHb7t4I0SW.jpg
+tmdbId: 60243
+imdbId: tt1832382
 ratings:
   imdb: 8.3
   votes: 250000

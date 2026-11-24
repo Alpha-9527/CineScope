@@ -4,7 +4,7 @@ originalTitle: 東京物語
 year: 1953
 countries:
   - 日本
-language: 日语
+language: 英语
 runtime: 136
 directors:
   - 小津安二郎
@@ -13,10 +13,19 @@ cast:
   - 东山千荣子
   - 原节子
   - 杉村春子
+  - 山村聪
+  - 三宅邦子
+  - 香川京子
+  - 东野英治郎
+  - 中村伸郎
+  - 大坂志郎
 genres:
   - 剧情
-  - 家庭
 palette: dusk
+poster: https://image.tmdb.org/t/p/w500/beNNyQgRx7o4pfIX7OUZJcOcltV.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/jLq0ol1f0ZKXni9R9GsPBcyPrNN.jpg
+tmdbId: 18148
+imdbId: tt0046438
 ratings:
   imdb: 8.2
   votes: 70000

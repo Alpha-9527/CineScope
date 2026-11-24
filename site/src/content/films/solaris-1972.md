@@ -3,19 +3,31 @@ title: 索拉里斯
 originalTitle: Солярис
 year: 1972
 countries:
-  - 苏联
+  - 俄罗斯
 language: 俄语
-runtime: 167
+runtime: 165
 directors:
   - 安德烈·塔可夫斯基
 cast:
+  - 娜塔莉亚·邦达尔丘克
   - 多纳塔斯·巴尼奥尼斯
-  - 娜塔莉娅·邦达尔丘克
-  - 安纳托利·索洛尼岑
+  - Jüri Järvet
+  - Владислав Дворжецкий
+  - 尼古拉·格林科
+  - 阿纳托利·索洛尼琴
+  - Ольга Барнет
+  - Vitalik Kerdimun
+  - Ольга Кизилова
+  - Татьяна Малых
 genres:
-  - 科幻
   - 剧情
+  - 科幻
+  - 悬疑
 palette: dusk
+poster: https://image.tmdb.org/t/p/w500/xYN3dwytiL3vgcuynzYitIcKmKS.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/jZv1u7uzpOE5JOc2MmrvPUZWoyb.jpg
+tmdbId: 593
+imdbId: tt0069293
 ratings:
   imdb: 8
   votes: 100000

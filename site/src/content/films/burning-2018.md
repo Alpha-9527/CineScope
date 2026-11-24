@@ -4,7 +4,8 @@ originalTitle: 버닝
 year: 2018
 countries:
   - 韩国
-language: 韩语
+  - 日本
+language: 英语
 runtime: 148
 directors:
   - 李沧东
@@ -12,10 +13,22 @@ cast:
   - 刘亚仁
   - 史蒂文·元
   - 全钟瑞
+  - 金秀京
+  - 崔承浩
+  - 文成根
+  - 闵福基
+  - 이수정
+  - 潘慧罗
+  - 车美京
 genres:
-  - 剧情
   - 悬疑
+  - 剧情
+  - 惊悚
 palette: ember
+poster: https://image.tmdb.org/t/p/w500/nJhAPDiCu65OMsKc7rUUIp5OKR.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/qQEt2FqF8McryFBNX30dyDJKiEK.jpg
+tmdbId: 491584
+imdbId: tt7282468
 ratings:
   imdb: 7.5
   votes: 80000

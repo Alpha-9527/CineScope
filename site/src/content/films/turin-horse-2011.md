@@ -4,21 +4,26 @@ originalTitle: A torinói ló
 year: 2011
 countries:
   - 匈牙利
+  - 瑞士
   - 法国
   - 德国
-  - 瑞士
-language: 匈牙利语
+language: 德语
 runtime: 155
 directors:
   - 贝拉·塔尔
-  - 阿格内什·赫拉尼茨基
 cast:
-  - 亚诺什·代尔日
-  - 艾丽卡·博克
-  - 米哈伊·科尔莫什
+  - 亚诺斯·德兹西
+  - Erika Bók
+  - 米哈伊·科尔莫斯
+  - Kovács Lajos
+  - Mihály Ráday
 genres:
   - 剧情
 palette: ink
+poster: https://image.tmdb.org/t/p/w500/wZRROvVJWfuQNYV7Zzerv1Bmh6x.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/eMgNa5dbU34qyF0KA9DMA4TrEzn.jpg
+tmdbId: 81401
+imdbId: tt1316540
 ratings:
   imdb: 7.8
   votes: 19000

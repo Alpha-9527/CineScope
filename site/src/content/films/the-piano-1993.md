@@ -3,22 +3,32 @@ title: 钢琴课
 originalTitle: The Piano
 year: 1993
 countries:
-  - 新西兰
   - 澳大利亚
   - 法国
-language: 英语、毛利语、英国手语
-runtime: 121
+  - 新西兰
+language: 英语
+runtime: 120
 directors:
   - 简·坎皮恩
 cast:
-  - 霍利·亨特
+  - 霍莉·亨特
   - 哈维·凯特尔
   - 山姆·尼尔
   - 安娜·帕奎因
+  - 克利夫·柯蒂斯
+  - 克里·沃克
+  - 伊恩·穆内
+  - 吉纳维芙·莱蒙
+  - 皮特·史密斯
+  - Bruce Allpress
 genres:
   - 剧情
   - 爱情
 palette: sea
+poster: https://image.tmdb.org/t/p/w500/udSvOHlG6CuuNX6x1n2PZcVzQ2b.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/c2O99arhWcuLexMHiuRfSuDMpYm.jpg
+tmdbId: 713
+imdbId: tt0107822
 ratings:
   imdb: 7.6
   votes: 90000

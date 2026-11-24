@@ -3,19 +3,30 @@ title: 廷巴克图
 originalTitle: Timbuktu
 year: 2014
 countries:
-  - 毛里塔尼亚
   - 法国
-language: 塔马舍克语、法语、阿拉伯语
+language: 法语
 runtime: 97
 directors:
-  - 阿伯德拉马纳·希萨柯
+  - 阿布戴尔·拉赫曼·西萨科
 cast:
-  - 易卜拉欣·艾哈迈德
-  - 图卢·基基
-  - 阿贝尔·贾弗里
+  - Ibrahim Ahmed
+  - Toulou Kiki
+  - Layla Walet Mohamed
+  - Abel Jafri
+  - Kettly Noël
+  - Hichem Yacoubi
+  - Mehdi A.G. Mohamed
+  - Fatoumata Diawara
+  - Adel Mahmoud Cherif
+  - Salem Dendou
 genres:
   - 剧情
+  - 战争
 palette: sand
+poster: https://image.tmdb.org/t/p/w500/pG5SYVCdN22Cc10nKhW4XFugtpj.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/3cQO2X0vRpMYwNhoZURSCxUpCPh.jpg
+tmdbId: 265228
+imdbId: tt3409392
 ratings:
   imdb: 7.1
   votes: 18000

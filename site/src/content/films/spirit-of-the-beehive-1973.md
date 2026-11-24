@@ -5,17 +5,28 @@ year: 1973
 countries:
   - 西班牙
 language: 西班牙语
-runtime: 97
+runtime: 99
 directors:
-  - 维克多·艾里斯
+  - 维克托·艾里斯
 cast:
-  - 安娜·托伦特
-  - 费尔南多·费尔南·戈麦斯
-  - 特雷莎·希姆佩拉
+  - Ana Torrent
+  - Fernando Fernán Gómez
+  - Teresa Gimpera
+  - Isabel Tellería
+  - Laly Soldevila
+  - Miguel Picazo
+  - José Villasante
+  - Juan Margallo
+  - Estanis González
+  - Ketty de la Cámara
 genres:
   - 剧情
   - 奇幻
 palette: moss
+poster: https://image.tmdb.org/t/p/w500/ueefcFKn9qoAQqjSWY6H9xjjLU2.jpg
+backdrop: https://image.tmdb.org/t/p/w1280/4vbL72K9uVaMLhnvmdg1So7kqex.jpg
+tmdbId: 4495
+imdbId: tt0070040
 ratings:
   imdb: 7.9
   votes: 22000

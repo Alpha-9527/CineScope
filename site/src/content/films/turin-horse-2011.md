@@ -2,17 +2,27 @@
 title: 都灵之马
 originalTitle: A torinói ló
 year: 2011
-countries: [匈牙利, 法国, 德国, 瑞士]
+countries:
+  - 匈牙利
+  - 法国
+  - 德国
+  - 瑞士
 language: 匈牙利语
 runtime: 155
-directors: [贝拉·塔尔, 阿格内什·赫拉尼茨基]
-cast: [亚诺什·代尔日, 艾丽卡·博克, 米哈伊·科尔莫什]
-genres: [剧情]
+directors:
+  - 贝拉·塔尔
+  - 阿格内什·赫拉尼茨基
+cast:
+  - 亚诺什·代尔日
+  - 艾丽卡·博克
+  - 米哈伊·科尔莫什
+genres:
+  - 剧情
 palette: ink
 ratings:
   imdb: 7.8
   votes: 19000
-  source: IMDb 官方数据集（样例值）
+  source: IMDb 官方数据集
 scores:
   audience: 71
   artistic: 97
@@ -22,7 +32,7 @@ scores:
 selection:
   issue: '2026-11-22'
   angle: 三十个长镜头，拍完一个人如何被世界慢慢关掉。
-dataStatus: sample
+dataStatus: verified
 sources:
   - label: TMDb 影片资料（接入 API 后自动补全来源链接）
     retrieved: '2026-11-20'

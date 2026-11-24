@@ -302,7 +302,7 @@ CREATE INDEX IF NOT EXISTS idx_articles_magazine ON editorial_articles (magazine
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS publish_logs (
   id           bigserial PRIMARY KEY,
-  target       text NOT NULL CHECK (target IN ('content', 'git', 'cloudflare', 'rss')),
+  target       text NOT NULL CHECK (target IN ('content', 'git', 'site', 'cloudflare', 'rss')),
   status       publish_status NOT NULL DEFAULT 'pending',
   reference    text,
   commit_sha   text,

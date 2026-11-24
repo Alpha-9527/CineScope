@@ -127,7 +127,7 @@ export async function runEnrich({ limit = 10, force = false, dryRun = false } = 
            tmdb_vote_average = $11,
            tmdb_vote_count = $12,
            last_synced_at = now(),
-           metadata = films.metadata || $13::jsonb
+           metadata = coalesce(films.metadata, '{}'::jsonb) || $13::jsonb
          WHERE id = $1`,
         [
           film.id,

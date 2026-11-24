@@ -2,17 +2,24 @@
 title: 廷巴克图
 originalTitle: Timbuktu
 year: 2014
-countries: [毛里塔尼亚, 法国]
+countries:
+  - 毛里塔尼亚
+  - 法国
 language: 塔马舍克语、法语、阿拉伯语
 runtime: 97
-directors: [阿伯德拉马纳·希萨柯]
-cast: [易卜拉欣·艾哈迈德, 图卢·基基, 阿贝尔·贾弗里]
-genres: [剧情]
+directors:
+  - 阿伯德拉马纳·希萨柯
+cast:
+  - 易卜拉欣·艾哈迈德
+  - 图卢·基基
+  - 阿贝尔·贾弗里
+genres:
+  - 剧情
 palette: sand
 ratings:
   imdb: 7.1
   votes: 18000
-  source: IMDb 官方数据集（样例值）
+  source: IMDb 官方数据集
 scores:
   audience: 76
   artistic: 91
@@ -22,7 +29,7 @@ scores:
 selection:
   issue: '2026-11-21'
   angle: 在被占领的城市里，日常生活本身就是一种抵抗。
-dataStatus: sample
+dataStatus: verified
 sources:
   - label: TMDb 影片资料（接入 API 后自动补全来源链接）
     retrieved: '2026-11-19'

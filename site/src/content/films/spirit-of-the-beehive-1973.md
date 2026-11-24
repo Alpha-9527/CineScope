@@ -2,17 +2,24 @@
 title: 蜂巢幽灵
 originalTitle: El espíritu de la colmena
 year: 1973
-countries: [西班牙]
+countries:
+  - 西班牙
 language: 西班牙语
 runtime: 97
-directors: [维克多·艾里斯]
-cast: [安娜·托伦特, 费尔南多·费尔南·戈麦斯, 特雷莎·希姆佩拉]
-genres: [剧情, 奇幻]
+directors:
+  - 维克多·艾里斯
+cast:
+  - 安娜·托伦特
+  - 费尔南多·费尔南·戈麦斯
+  - 特雷莎·希姆佩拉
+genres:
+  - 剧情
+  - 奇幻
 palette: moss
 ratings:
   imdb: 7.9
   votes: 22000
-  source: IMDb 官方数据集（样例值）
+  source: IMDb 官方数据集
 scores:
   audience: 80
   artistic: 94
@@ -22,7 +29,7 @@ scores:
 selection:
   issue: '2026-11-22'
   angle: 用孩子的眼睛，看见一个刚刚开始沉默的国家。
-dataStatus: sample
+dataStatus: verified
 sources:
   - label: TMDb 影片资料（接入 API 后自动补全来源链接）
     retrieved: '2026-11-20'

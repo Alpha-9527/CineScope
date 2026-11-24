@@ -24,12 +24,17 @@ function buildSources(film) {
   return sources;
 }
 
+const num = (value, fallback) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
 function normalizeAssessment(data) {
   return {
-    audience: clamp(Math.round(Number(data.audience ?? 60))),
-    artistic: clamp(Math.round(Number(data.artistic ?? 60))),
-    recommendation: clamp(Math.round(Number(data.recommendation ?? 60))),
-    confidence: Math.min(1, Math.max(0, Number(data.confidence ?? 0.5))),
+    audience: clamp(Math.round(num(data.audience, 60))),
+    artistic: clamp(Math.round(num(data.artistic, 60))),
+    recommendation: clamp(Math.round(num(data.recommendation, 60))),
+    confidence: Math.min(1, Math.max(0, num(data.confidence, 0.5))),
     dimensions: data.dimensions ?? {},
     rationale: String(data.rationale ?? '').slice(0, 800),
     evidence: Array.isArray(data.evidence) ? data.evidence.slice(0, 5) : [],

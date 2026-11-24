@@ -22,7 +22,7 @@ cinescope/
 │   ├── src/components/   视觉组件（Artwork、HeroSection、FilmFacts…）
 │   ├── src/layouts/      BaseLayout / ArticleLayout
 │   └── src/pages/        首页、每日、周刊、专题、电影、归档、About、RSS
-├── db/migrations/        PostgreSQL 迁移（001 表结构 / 002 视图与触发器）
+├── db/migrations/        PostgreSQL 迁移（001 表结构 / 002 视图与触发器 / 003 发布日志目标）
 ├── pipeline/             AI 编辑管线（Node.js，无额外框架）
 │   └── src/commands/     discover / enrich / assess / write / daily / weekly / publish / seed / maintenance
 ├── n8n/                  8 个可导入的自动化工作流 JSON
@@ -48,7 +48,7 @@ npm run dev        # http://localhost:4321
 npm run build      # 静态产物在 site/dist
 ```
 
-仓库自带 9 部影片、3 期每日、1 期周刊、3 篇专题的中文样例内容，`dataStatus: sample` 会在页面上明确提示「样例数据」。不接数据库也能完整浏览。
+仓库自带 19 部影片（其中 1 篇《切腹》由管线在本地完整跑通时生成）、4 期每日、2 期周刊、3 篇专题的中文内容，`dataStatus: sample` 会在页面上明确提示「样例数据」。不接数据库也能完整浏览。
 
 ## 二、启用完整管线
 
@@ -59,6 +59,7 @@ cp .env.example .env    # 填写 DATABASE_URL / TMDB_API_TOKEN / DEEPSEEK_API_KE
 createdb cinescope
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/migrations/001_init.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/migrations/002_views.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/migrations/003_publish_log_targets.sql
 cd pipeline && npm install
 ```
 

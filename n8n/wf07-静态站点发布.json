@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "把已发布内容导出为 Markdown 并提交到 Git；宿主机定时任务推送后，Cloudflare Pages 自动构建。\npublish_logs 保留发布记录。",
+        "content": "把已发布内容导出为 Markdown，提交 Git 并触发 Cloudflare Pages。\n构建失败时不会覆盖线上版本；publish_logs 保留记录。",
         "height": 200,
         "width": 340,
         "color": 4
@@ -50,7 +50,7 @@
     },
     {
       "parameters": {
-        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs publish --commit"
+        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs publish --commit --build --deploy"
       },
       "id": "wf07-cmd-0",
       "name": "导出并部署",

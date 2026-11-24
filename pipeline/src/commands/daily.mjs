@@ -2,7 +2,7 @@ import { chatJSON } from '../ai.mjs';
 import { DAILY_EDITOR_SYSTEM, dailyPrompt } from '../prompts.mjs';
 import { many, one, withTransaction } from '../db.mjs';
 import { SQL_DAILY_POOL } from '../queries.mjs';
-import { todayInTimezone } from '../env.mjs';
+import { env, todayInTimezone } from '../env.mjs';
 
 function pickFallback(pool, count = 3) {
   return pool.slice(0, count);
@@ -106,7 +106,7 @@ export async function runDaily({
     }
 
     const body = [plan.editor_intro, plan.closing].filter(Boolean).join('\n\n');
-    const sources = entries
+    const sources = chosen
       .filter(({ film }) => film.tmdb_id)
       .map(({ film }) => ({
         label: `TMDb：${film.title_zh}`,
@@ -126,7 +126,7 @@ export async function runDaily({
         String(plan.subtitle ?? ''),
         body || '本期导语。',
         editionRow.id,
-        'deepseek-chat',
+        env.deepseekModel,
         JSON.stringify(sources),
       ],
     );

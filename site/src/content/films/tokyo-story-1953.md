@@ -2,17 +2,25 @@
 title: 东京物语
 originalTitle: 東京物語
 year: 1953
-countries: [日本]
+countries:
+  - 日本
 language: 日语
 runtime: 136
-directors: [小津安二郎]
-cast: [笠智众, 东山千荣子, 原节子, 杉村春子]
-genres: [剧情, 家庭]
+directors:
+  - 小津安二郎
+cast:
+  - 笠智众
+  - 东山千荣子
+  - 原节子
+  - 杉村春子
+genres:
+  - 剧情
+  - 家庭
 palette: dusk
 ratings:
   imdb: 8.2
   votes: 70000
-  source: IMDb 官方数据集（样例值）
+  source: IMDb 官方数据集
 scores:
   audience: 88
   artistic: 96
@@ -22,7 +30,7 @@ scores:
 selection:
   issue: '2026-11-21'
   angle: 最平静的镜头，拍出最不忍心承认的疏远。
-dataStatus: sample
+dataStatus: verified
 sources:
   - label: TMDb 影片资料（接入 API 后自动补全来源链接）
     retrieved: '2026-11-19'

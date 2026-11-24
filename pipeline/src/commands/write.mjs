@@ -85,6 +85,8 @@ async function writeReview(film) {
     });
     title = String(repair.data.title ?? title).trim();
     body = String(repair.data.body ?? body).trim();
+    if (repair.data.subtitle) data.subtitle = repair.data.subtitle;
+    if (repair.data.pull_quote) data.pull_quote = repair.data.pull_quote;
     check = await proofreadArticle({ title, body, sources, film });
   }
 

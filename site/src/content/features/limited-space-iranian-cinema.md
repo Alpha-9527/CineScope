@@ -3,7 +3,8 @@ title: 有限空间里的巨大情感
 subtitle: 从《一次别离》看伊朗电影如何用一间屋子装下整个社会。
 date: '2026-11-18'
 topic: 国家电影
-films: [a-separation-2011]
+films:
+  - a-separation-2011
 palette: ash
 sources:
   - label: 柏林电影节 2011 年官方档案

@@ -25,9 +25,10 @@ const filmMap = await getFilmMap();
     <ul class="mt-4">
       {
         dailies.map((edition) => {
-          const films = edition.data.films
-            .map((item) => filmMap.get(item.slug))
-            .filter((film) => Boolean(film));
+          const films = edition.data.films.flatMap((item) => {
+            const film = filmMap.get(item.slug);
+            return film ? [film] : [];
+          });
           return (
             <li class="border-b border-line-soft">
               <a

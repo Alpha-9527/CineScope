@@ -212,7 +212,7 @@ const WORKFLOWS = [
       {
         name: '备份数据库',
         command:
-          'cd /opt/cinescope && mkdir -p backups && set -a && . ./.env && set +a && pg_dump "$DATABASE_URL" | gzip > "backups/cinescope-$(date +%F).sql.gz" && ls -lh backups | tail -n 5',
+          'cd /opt/cinescope && mkdir -p backups && if command -v pg_dump >/dev/null 2>&1; then set -a && . ./.env && set +a && pg_dump "$DATABASE_URL" | gzip > "backups/cinescope-$(date +%F).sql.gz" && ls -lh backups | tail -n 5; else echo \'{"backup":"skipped","reason":"pg_dump not installed in n8n container"}\'; fi',
       },
       { name: '一致性检查', command: `${PIPELINE} maintain --log-days=180 --availability-days=180` },
     ],

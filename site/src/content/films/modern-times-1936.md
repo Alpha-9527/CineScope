@@ -4,7 +4,7 @@ originalTitle: Modern Times
 year: 1936
 countries:
   - 美国
-language: xx
+language: —
 runtime: 87
 directors:
   - 查理·卓别林

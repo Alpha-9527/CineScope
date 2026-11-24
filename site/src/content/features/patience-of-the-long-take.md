@@ -3,7 +3,9 @@ title: 长镜头的耐心
 subtitle: 从《都灵之马》到《索拉里斯》，缓慢为何仍然有效。
 date: '2026-11-16'
 topic: 电影语言
-films: [turin-horse-2011, solaris-1972]
+films:
+  - turin-horse-2011
+  - solaris-1972
 palette: ink
 sources:
   - label: 柏林电影节 2011 年官方档案

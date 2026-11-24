@@ -2,17 +2,24 @@
 title: 索拉里斯
 originalTitle: Солярис
 year: 1972
-countries: [苏联]
+countries:
+  - 苏联
 language: 俄语
 runtime: 167
-directors: [安德烈·塔可夫斯基]
-cast: [多纳塔斯·巴尼奥尼斯, 娜塔莉娅·邦达尔丘克, 安纳托利·索洛尼岑]
-genres: [科幻, 剧情]
+directors:
+  - 安德烈·塔可夫斯基
+cast:
+  - 多纳塔斯·巴尼奥尼斯
+  - 娜塔莉娅·邦达尔丘克
+  - 安纳托利·索洛尼岑
+genres:
+  - 科幻
+  - 剧情
 palette: dusk
 ratings:
-  imdb: 8.0
+  imdb: 8
   votes: 100000
-  source: IMDb 官方数据集（样例值）
+  source: IMDb 官方数据集
 scores:
   audience: 82
   artistic: 96
@@ -20,9 +27,8 @@ scores:
   confidence: 0.86
   final: 77
 selection:
-  issue: '2026-11-23'
   angle: 把科幻从"征服宇宙"拉回到人心里最不愿承认的那部分。
-dataStatus: sample
+dataStatus: verified
 sources:
   - label: TMDb 影片资料（接入 API 后自动补全来源链接）
     retrieved: '2026-11-20'

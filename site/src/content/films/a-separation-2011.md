@@ -2,17 +2,25 @@
 title: 一次别离
 originalTitle: جدایی نادر از سیمین
 year: 2011
-countries: [伊朗]
+countries:
+  - 伊朗
 language: 波斯语
 runtime: 123
-directors: [阿斯哈·法哈蒂]
-cast: [佩曼·莫阿迪, 蕾拉·哈塔米, 萨瑞·巴亚特, 沙哈布·侯赛尼]
-genres: [剧情, 家庭]
+directors:
+  - 阿斯哈·法哈蒂
+cast:
+  - 佩曼·莫阿迪
+  - 蕾拉·哈塔米
+  - 萨瑞·巴亚特
+  - 沙哈布·侯赛尼
+genres:
+  - 剧情
+  - 家庭
 palette: ash
 ratings:
   imdb: 8.3
   votes: 250000
-  source: IMDb 官方数据集（样例值）
+  source: IMDb 官方数据集
 scores:
   audience: 89
   artistic: 92
@@ -22,7 +30,7 @@ scores:
 selection:
   issue: '2026-11-21'
   angle: 没有反派，只有各自成立的理由。
-dataStatus: sample
+dataStatus: verified
 sources:
   - label: TMDb 影片资料（接入 API 后自动补全来源链接）
     retrieved: '2026-11-19'

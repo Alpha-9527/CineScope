@@ -167,7 +167,10 @@ function parseArgs(argv) {
       positional.push(arg);
       continue;
     }
-    const [rawKey, rawValue] = arg.slice(2).split('=');
+    const body = arg.slice(2);
+    const eq = body.indexOf('=');
+    const rawKey = eq === -1 ? body : body.slice(0, eq);
+    const rawValue = eq === -1 ? undefined : body.slice(eq + 1);
     const key = rawKey.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
     if (rawValue === undefined) {
       options[key] = true;

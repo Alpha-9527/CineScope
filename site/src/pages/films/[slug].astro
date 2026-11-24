@@ -99,32 +99,34 @@ const jsonLd = {
             ))}
           </div>
         </div>
-
-        <nav class="mt-16 border-t border-line-soft pt-6" aria-label="影片导航">
-          <div class="flex items-center justify-between gap-6 text-[0.72rem]">
-            {prev ? (
-              <a href={`/films/${prev.slug}/`} class="group max-w-[45%]">
-                <span class="text-muted">上一部</span>
-                <span class="mt-1 block truncate text-paper-dim group-hover:text-gold">
-                  {prev.data.title}
-                </span>
-              </a>
-            ) : (
-              <span />
-            )}
-            {next ? (
-              <a href={`/films/${next.slug}/`} class="group max-w-[45%] text-right">
-                <span class="text-muted">下一部</span>
-                <span class="mt-1 block truncate text-paper-dim group-hover:text-gold">
-                  {next.data.title}
-                </span>
-              </a>
-            ) : (
-              <span />
-            )}
-          </div>
-        </nav>
       </div>
     )
   }
+
+  <div slot="after" class="shell mt-16">
+    <nav class="border-t border-line-soft pt-6" aria-label="影片导航">
+      <div class="flex items-center justify-between gap-6 text-[0.72rem]">
+        {prev ? (
+          <a href={`/films/${prev.slug}/`} class="group max-w-[45%]">
+            <span class="text-muted">上一部</span>
+            <span class="mt-1 block truncate text-paper-dim group-hover:text-gold">
+              {prev.data.title}
+            </span>
+          </a>
+        ) : (
+          <span />
+        )}
+        {next ? (
+          <a href={`/films/${next.slug}/`} class="group max-w-[45%] text-right">
+            <span class="text-muted">下一部</span>
+            <span class="mt-1 block truncate text-paper-dim group-hover:text-gold">
+              {next.data.title}
+            </span>
+          </a>
+        ) : (
+          <span />
+        )}
+      </div>
+    </nav>
+  </div>
 </ArticleLayout>

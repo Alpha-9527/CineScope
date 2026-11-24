@@ -373,6 +373,8 @@ function git(args) {
 }
 
 async function commitContent(relativePaths) {
+  if (relativePaths.length === 0) return { committed: false, sha: null };
+
   const add = git(['add', ...relativePaths]);
   if (add.status !== 0) throw new Error(`git add 失败：${add.stderr || add.stdout}`);
 
@@ -404,7 +406,10 @@ async function triggerDeploy() {
   if (!env.cloudflareHook) {
     throw new Error('未配置 CLOUDFLARE_DEPLOY_HOOK，无法触发部署。');
   }
-  const response = await fetch(env.cloudflareHook, { method: 'POST' });
+  const response = await fetch(env.cloudflareHook, {
+    method: 'POST',
+    signal: AbortSignal.timeout(30_000),
+  });
   if (!response.ok) {
     throw new Error(`Cloudflare Deploy Hook 返回 ${response.status}`);
   }
@@ -451,25 +456,44 @@ export async function runPublish({
 
   const output = { ...summary };
 
-  if (commit) {
-    const relative = all.map((item) => path.relative(REPO_ROOT, item.path));
-    const result = await commitContent(relative);
-    output.git = result;
+  try {
+    if (commit) {
+      const relative = all.map((item) => path.relative(REPO_ROOT, item.path));
+      const result = await commitContent(relative);
+      output.git = result;
+      await logPublish({
+        target: 'git',
+        status: 'success',
+        reference: result.sha ?? 'no-change',
+        detail: { files: relative.length },
+        commitSha: result.sha,
+      });
+    }
+
+    if (build) {
+      output.build = buildSite();
+      await logPublish({
+        target: 'site',
+        status: 'success',
+        reference: `${output.build.pages ?? '?'} pages`,
+        detail: output.build,
+        pagesBuilt: output.build.pages,
+      });
+    }
+
+    if (deploy) {
+      output.deploy = { status: await triggerDeploy() };
+      await logPublish({ target: 'cloudflare', status: 'success', reference: env.siteUrl });
+    }
+  } catch (error) {
     await logPublish({
-      target: 'git',
-      status: 'success',
-      reference: result.sha ?? 'no-change',
-      detail: { files: relative.length },
+      target: deploy ? 'cloudflare' : build ? 'site' : 'git',
+      status: 'failed',
+      reference: null,
+      detail: output,
+      error: String(error.message ?? error).slice(0, 800),
     });
-  }
-
-  if (build) {
-    output.build = buildSite();
-  }
-
-  if (deploy) {
-    output.deploy = { status: await triggerDeploy() };
-    await logPublish({ target: 'cloudflare', status: 'success', reference: env.siteUrl });
+    throw error;
   }
 
   return output;

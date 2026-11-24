@@ -3,7 +3,9 @@ title: 南方的目光
 subtitle: 当非洲与拉丁美洲的导演拿回自己的镜头。
 date: '2026-11-12'
 topic: 世界电影文化
-films: [timbuktu-2014, roma-2018]
+films:
+  - timbuktu-2014
+  - roma-2018
 palette: sand
 sources:
   - label: 戛纳电影节 2014 年官方档案

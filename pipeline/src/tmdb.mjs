@@ -52,7 +52,19 @@ export async function tmdbGet(pathname, params = {}, { retries = 3 } = {}) {
     if (wait > 0) await sleep(wait);
     lastCall = Date.now();
 
-    const response = await fetch(withKey(url.toString()), { headers: authHeaders() });
+    let response;
+    try {
+      response = await fetch(withKey(url.toString()), {
+        headers: authHeaders(),
+        signal: AbortSignal.timeout(30_000),
+      });
+    } catch (error) {
+      if (attempt === retries) {
+        throw new Error(`TMDb 网络请求失败：${error.message}（${pathname}）`);
+      }
+      await sleep(800 * attempt);
+      continue;
+    }
     if (response.ok) return response.json();
 
     if (response.status === 429 || response.status >= 500) {
@@ -159,6 +171,7 @@ export function mapMovie(detail) {
       .map((c) => localize('region', c.iso_3166_1, c.name))
       .filter(Boolean),
     languages: (detail.spoken_languages ?? [])
+      .filter((l) => l.iso_639_1 !== 'xx')
       .map((l) => localize('language', l.iso_639_1, l.name))
       .filter(Boolean),
     genres: (detail.genres ?? []).map((g) => g.name),
@@ -179,7 +192,17 @@ export function mapMovie(detail) {
       order: person.order,
     })),
     crew: crew
-      .filter((person) => ['Director', 'Writer', 'Screenplay', 'Original Music Composer'].includes(person.job))
+      .filter((person) =>
+        [
+          'Director',
+          'Writer',
+          'Screenplay',
+          'Original Music Composer',
+          'Director of Photography',
+          'Producer',
+          'Editor',
+        ].includes(person.job),
+      )
       .map((person) => ({ tmdbId: person.id, name: person.name, job: person.job })),
     raw: detail,
   };

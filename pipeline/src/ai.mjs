@@ -30,14 +30,24 @@ export async function chat({
   if (json) body.response_format = { type: 'json_object' };
 
   for (let attempt = 1; attempt <= retries; attempt += 1) {
-    const response = await fetch(`${env.deepseekBaseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(body),
-    });
+    let response;
+    try {
+      response = await fetch(`${env.deepseekBaseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(180_000),
+      });
+    } catch (error) {
+      if (attempt === retries) {
+        throw new Error(`DeepSeek 网络请求失败：${error.message}`);
+      }
+      await sleep(900 * attempt * attempt);
+      continue;
+    }
 
     if (response.ok) {
       const data = await response.json();

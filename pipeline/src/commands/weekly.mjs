@@ -1,13 +1,13 @@
 import { chatJSON } from '../ai.mjs';
 import { WEEKLY_EDITOR_SYSTEM, weeklyPrompt } from '../prompts.mjs';
 import { many, one, withTransaction } from '../db.mjs';
-import { isoWeek, todayInTimezone } from '../env.mjs';
+import { env, isoWeek, todayInTimezone } from '../env.mjs';
 
-const PALETTES = new Set(['dusk', 'ember', 'moss', 'sand', 'ash', 'ink', 'rust', 'sea']);
+const PALETTES = new Set(['dusk', 'ember', 'moss', 'sand', 'ash', 'ink', 'rust', 'sea', 'paper']);
 
 async function loadCandidates(limit = 20) {
   return many(
-    `SELECT f.id, f.slug, f.title_zh, f.year, f.countries, f.tmdb_popularity,
+    `SELECT f.id, f.slug, f.title_zh, f.year, f.countries, f.tmdb_id, f.tmdb_popularity,
             a.artistic_score, a.final_score, a.rationale,
             a.dimensions->>'angle' AS angle
      FROM films f
@@ -75,8 +75,21 @@ export async function runWeekly({
       })
       .filter(Boolean);
 
-  let picks = resolve(plan.picks);
-  let finds = resolve(plan.special_finds);
+  // 同一部影片在周刊中只能出现一次（weekly_items 有 UNIQUE (magazine_id, film_id)）。
+  const dedupe = (list) => {
+    const seen = new Set();
+    return list.filter((entry) => {
+      const key = String(entry.film.id);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
+  let picks = dedupe(resolve(plan.picks));
+  let finds = dedupe(resolve(plan.special_finds)).filter(
+    (entry) => !picks.some((pick) => pick.film.id === entry.film.id),
+  );
 
   if (picks.length < 4) {
     const used = new Set(picks.map((p) => p.film.id));
@@ -95,6 +108,8 @@ export async function runWeekly({
       .slice(0, 2)
       .map((film) => ({ film, note: film.angle ?? '被主流视野忽略，但值得单独提出。' }));
   }
+  // 兜底补片可能重复，再次确保 picks 与 finds 不交叉。
+  finds = dedupe(finds).filter((entry) => !picks.some((pick) => pick.film.id === entry.film.id));
 
   const palette = PALETTES.has(plan.cover_palette) ? plan.cover_palette : 'ash';
 
@@ -149,11 +164,36 @@ export async function runWeekly({
     }
 
     const body = [plan.editor_intro, plan.closing].filter(Boolean).join('\n\n');
+    const weeklySources = [...picks, ...finds]
+      .filter(({ film }) => film.tmdb_id)
+      .map(({ film }) => ({
+        label: `TMDb：${film.title_zh}`,
+        url: `https://www.themoviedb.org/movie/${film.tmdb_id}`,
+        retrieved: date,
+      }));
+    if (weeklySources.length === 0) {
+      weeklySources.push({
+        label: 'TMDb 影片基础资料',
+        url: 'https://www.themoviedb.org/',
+        retrieved: date,
+      });
+    }
     await client.query(
       `INSERT INTO editorial_articles (kind, slug, title, subtitle, body_markdown, magazine_id, status, model, sources)
-       VALUES ('weekly_editorial', $1, $2, $3, $4, $5, 'approved', 'deepseek-chat', '[]'::jsonb)
-       ON CONFLICT (slug) DO UPDATE SET body_markdown = EXCLUDED.body_markdown, updated_at = now()`,
-      [`weekly-${targetYear}-w${targetWeek}`, String(plan.title ?? ''), String(plan.subtitle ?? ''), body || '本期导语。', row.id],
+       VALUES ('weekly_editorial', $1, $2, $3, $4, $5, 'approved', $6, $7)
+       ON CONFLICT (slug) DO UPDATE SET
+         body_markdown = EXCLUDED.body_markdown,
+         sources = EXCLUDED.sources,
+         updated_at = now()`,
+      [
+        `weekly-${targetYear}-w${targetWeek}`,
+        String(plan.title ?? ''),
+        String(plan.subtitle ?? ''),
+        body || '本期导语。',
+        row.id,
+        env.deepseekModel,
+        JSON.stringify(weeklySources),
+      ],
     );
 
     return row;

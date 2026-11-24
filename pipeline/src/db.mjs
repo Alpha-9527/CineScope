@@ -60,11 +60,19 @@ export async function closePool() {
   }
 }
 
-export async function logPublish({ target, status, reference, detail = {}, error }) {
+export async function logPublish({
+  target,
+  status,
+  reference,
+  detail = {},
+  error,
+  commitSha = null,
+  pagesBuilt = null,
+}) {
   if (!env.databaseUrl) return;
   await query(
-    `INSERT INTO publish_logs (target, status, reference, detail, error, finished_at)
-     VALUES ($1, $2, $3, $4, $5, now())`,
-    [target, status, reference ?? null, JSON.stringify(detail), error ?? null],
+    `INSERT INTO publish_logs (target, status, reference, detail, error, commit_sha, pages_built, finished_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, now())`,
+    [target, status, reference ?? null, JSON.stringify(detail), error ?? null, commitSha, pagesBuilt],
   );
 }

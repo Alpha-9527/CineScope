@@ -2,17 +2,24 @@
 title: 燃烧
 originalTitle: 버닝
 year: 2018
-countries: [韩国]
+countries:
+  - 韩国
 language: 韩语
 runtime: 148
-directors: [李沧东]
-cast: [刘亚仁, 史蒂文·元, 全钟瑞]
-genres: [剧情, 悬疑]
+directors:
+  - 李沧东
+cast:
+  - 刘亚仁
+  - 史蒂文·元
+  - 全钟瑞
+genres:
+  - 剧情
+  - 悬疑
 palette: ember
 ratings:
   imdb: 7.5
   votes: 80000
-  source: IMDb 官方数据集（样例值）
+  source: IMDb 官方数据集
 scores:
   audience: 78
   artistic: 93
@@ -20,9 +27,9 @@ scores:
   confidence: 0.84
   final: 73
 selection:
-  issue: '2026-11-23'
+  issue: '2026-11-24'
   angle: 把阶级的愤怒拍成一场始终没有发生的犯罪。
-dataStatus: sample
+dataStatus: verified
 sources:
   - label: TMDb 影片资料（接入 API 后自动补全来源链接）
     retrieved: '2026-11-20'

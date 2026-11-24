@@ -203,10 +203,7 @@ async function exportDaily({ dryRun }) {
     };
 
     const filePath = path.join(CONTENT_DIR, 'daily', `${date}.md`);
-    const body =
-      String(edition.body_markdown ?? '').trim() ||
-      [edition.editor_intro, edition.closing].filter(Boolean).join('\n\n') ||
-      '本期导语。';
+    const body = String(edition.body_markdown ?? '').trim();
     results.push({
       slug: date,
       path: filePath,
@@ -266,10 +263,7 @@ async function exportWeekly({ dryRun }) {
     };
 
     const filePath = path.join(CONTENT_DIR, 'magazine', `${magazine.year}-week-${magazine.week}.md`);
-    const body =
-      String(magazine.body_markdown ?? '').trim() ||
-      [magazine.editor_intro, magazine.closing].filter(Boolean).join('\n\n') ||
-      '本期导语。';
+    const body = String(magazine.body_markdown ?? '').trim();
     results.push({
       slug: `${magazine.year}-week-${magazine.week}`,
       path: filePath,

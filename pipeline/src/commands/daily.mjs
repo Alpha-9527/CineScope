@@ -105,7 +105,9 @@ export async function runDaily({
       );
     }
 
-    const body = [plan.editor_intro, plan.closing].filter(Boolean).join('\n\n');
+    // 导语与总结已分别存入 editor_intro / closing，正文不再重复拼接，
+    // 否则站点会在导语、正文、编辑总结三处出现同样的段落。
+    const body = '';
     const sources = chosen
       .filter(({ film }) => film.tmdb_id)
       .map(({ film }) => ({
@@ -124,7 +126,7 @@ export async function runDaily({
         `daily-${date}`,
         String(plan.title ?? ''),
         String(plan.subtitle ?? ''),
-        body || '本期导语。',
+        body,
         editionRow.id,
         env.deepseekModel,
         JSON.stringify(sources),

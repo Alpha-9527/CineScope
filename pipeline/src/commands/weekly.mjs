@@ -163,7 +163,8 @@ export async function runWeekly({
       );
     }
 
-    const body = [plan.editor_intro, plan.closing].filter(Boolean).join('\n\n');
+    // 同每日：导语与总结单独存储，避免周刊页面重复渲染。
+    const body = '';
     const weeklySources = [...picks, ...finds]
       .filter(({ film }) => film.tmdb_id)
       .map(({ film }) => ({
@@ -189,7 +190,7 @@ export async function runWeekly({
         `weekly-${targetYear}-w${targetWeek}`,
         String(plan.title ?? ''),
         String(plan.subtitle ?? ''),
-        body || '本期导语。',
+        body,
         row.id,
         env.deepseekModel,
         JSON.stringify(weeklySources),

@@ -172,8 +172,16 @@ export function mapMovie(detail) {
       .filter(Boolean),
     languages: (detail.spoken_languages ?? [])
       .filter((l) => l.iso_639_1 !== 'xx')
-      .map((l) => localize('language', l.iso_639_1, l.name))
-      .filter(Boolean),
+      .map((l) => ({ code: l.iso_639_1, name: localize('language', l.iso_639_1, l.name) }))
+      .filter((item) => item.name)
+      // TMDb 的对白语言顺序不固定（《东京物语》会把英语排在首位），
+      // 原始语言始终排第一，发布时取 languages[0] 才不会取错。
+      .sort((a, b) => {
+        if (a.code === detail.original_language) return -1;
+        if (b.code === detail.original_language) return 1;
+        return 0;
+      })
+      .map((item) => item.name),
     genres: (detail.genres ?? []).map((g) => g.name),
     overviewZh: detail.overview || null,
     overviewEn: englishOverview,

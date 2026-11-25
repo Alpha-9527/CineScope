@@ -50,7 +50,7 @@
     },
     {
       "parameters": {
-        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs publish --commit"
+        "command": "cd /home/ubuntu/Documents/Trae-CN/temp_20261123_01/cinescope/pipeline && node src/cli.mjs publish --commit"
       },
       "id": "wf07-cmd-0",
       "name": "导出并提交",
@@ -110,7 +110,7 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "timezone": "Asia/Shanghai",

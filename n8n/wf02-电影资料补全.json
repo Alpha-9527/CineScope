@@ -39,7 +39,7 @@
     },
     {
       "parameters": {
-        "command": "cd /opt/cinescope/pipeline && node src/cli.mjs enrich --limit=20"
+        "command": "cd /home/ubuntu/Documents/Trae-CN/temp_20261123_01/cinescope/pipeline && node src/cli.mjs enrich --limit=20"
       },
       "id": "wf02-cmd-0",
       "name": "补全影片资料",
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "timezone": "Asia/Shanghai",

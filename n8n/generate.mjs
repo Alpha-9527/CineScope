@@ -3,10 +3,12 @@
  * 生成 n8n 工作流 JSON。
  *
  * 每条工作流都以「定时触发 → 执行管线命令 → 解析输出」的最小结构组织，
- * 便于在自托管 n8n 中直接导入、逐条启用。执行命令依赖服务器上的
- * /opt/cinescope/pipeline 与已配置好的 .env。
+ * 便于在自托管 n8n 中直接导入、逐条启用。
  *
- * 运行：node n8n/generate.mjs
+ * 用法：
+ *   node n8n/generate.mjs                       # 默认路径 /opt/cinescope，active=false
+ *   node n8n/generate.mjs --activate            # 默认路径，active=true
+ *   node n8n/generate.mjs --pipeline-path=/path/to/cinescope/pipeline --activate
  */
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
@@ -14,7 +16,28 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = here;
-const PIPELINE = 'cd /opt/cinescope/pipeline && node src/cli.mjs';
+
+const args = process.argv.slice(2);
+const opts = {};
+for (const arg of args) {
+  if (arg.startsWith('--')) {
+    const eq = arg.indexOf('=');
+    if (eq === -1) {
+      opts[arg.slice(2)] = true;
+    } else {
+      opts[arg.slice(2, eq)] = arg.slice(eq + 1);
+    }
+  }
+}
+
+const DEFAULT_PIPELINE_PATH = '/opt/cinescope/pipeline';
+const pipelinePath = opts['pipeline-path'] || process.env.PIPELINE_PATH || DEFAULT_PIPELINE_PATH;
+const activate = Boolean(opts['activate']);
+
+// 约定 n8n 容器里 node 通常在 PATH 中直接可用；
+// 若部署在宿主机上 node 不在默认 PATH，可用 --node=/path/to/node 指定。
+const nodeBin = opts.node || 'node';
+const PIPELINE = `cd ${pipelinePath} && ${nodeBin} src/cli.mjs`;
 
 function scheduleNode(id, cron) {
   return {
@@ -131,7 +154,7 @@ function build({ id, name, cron, description, steps, manual = false }) {
     name,
     nodes,
     connections,
-    active: false,
+    active: activate,
     settings: {
       executionOrder: 'v1',
       timezone: 'Asia/Shanghai',
@@ -220,7 +243,14 @@ async function main() {
     console.log(`written ${path.relative(process.cwd(), target)}`);
   }
 
-  console.log(`\n共 ${WORKFLOWS.length} 个工作流，全部 active=false，导入后需手动启用。`);
+  console.log(`\n共 ${WORKFLOWS.length} 个工作流`);
+  console.log(`  pipeline path : ${pipelinePath}`);
+  console.log(`  node binary   : ${nodeBin}`);
+  console.log(`  active        : ${activate}`);
+  if (!activate) {
+    console.log(`\n⚠️ 所有工作流当前为 inactive，导入 n8n 后需手动启用，或重跑：`);
+    console.log(`   node n8n/generate.mjs --activate --pipeline-path=${pipelinePath}`);
+  }
 }
 
 main().catch((error) => {

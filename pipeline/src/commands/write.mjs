@@ -91,10 +91,7 @@ async function writeReview(film) {
   }
 
   const slug = `film-${film.slug}`;
-  const articleSources = [
-    ...sources,
-    { label: 'CineScope 编辑部评估记录', retrieved: new Date().toISOString().slice(0, 10) },
-  ];
+  const articleSources = sources;
 
   const row = await one(
     `INSERT INTO editorial_articles (

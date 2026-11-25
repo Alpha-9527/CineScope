@@ -58,13 +58,23 @@ function tmdbSources(film) {
   return sources;
 }
 
+function isHttpUrl(value) {
+  try {
+    const url = new URL(String(value));
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+// 站点只展示可点击的来源，没有合法链接的条目不进入前端
 function normalizeSources(raw, fallback = []) {
   const list = Array.isArray(raw) ? raw : [];
   const cleaned = list
-    .filter((item) => item && item.label)
+    .filter((item) => item && item.label && isHttpUrl(item.url))
     .map((item) => ({
       label: String(item.label),
-      ...(item.url ? { url: String(item.url) } : {}),
+      url: String(item.url),
       ...(item.retrieved ? { retrieved: toISODate(item.retrieved) } : {}),
     }));
   return cleaned.length > 0 ? cleaned : fallback;
@@ -198,7 +208,7 @@ async function exportDaily({ dryRun }) {
       films: picks.map((pick) => ({ slug: pick.slug, note: pick.note ?? '' })),
       closing: edition.closing ?? '',
       sources: normalizeSources(edition.article_sources, [
-        { label: 'TMDb 影片基础资料', retrieved: new Date().toISOString().slice(0, 10) },
+        { label: 'TMDb 影片基础资料', url: 'https://www.themoviedb.org/', retrieved: new Date().toISOString().slice(0, 10) },
       ]),
     };
 
@@ -258,7 +268,7 @@ async function exportWeekly({ dryRun }) {
       specialFinds: finds.map((find) => ({ slug: find.slug, note: find.note ?? '' })),
       closing: magazine.closing ?? '',
       sources: normalizeSources(magazine.article_sources, [
-        { label: 'TMDb 影片基础资料', retrieved: new Date().toISOString().slice(0, 10) },
+        { label: 'TMDb 影片基础资料', url: 'https://www.themoviedb.org/', retrieved: new Date().toISOString().slice(0, 10) },
       ]),
     };
 
@@ -295,7 +305,7 @@ async function exportFeatures({ dryRun }) {
       films: Array.isArray(meta.films) ? meta.films : feature.film_slug ? [feature.film_slug] : [],
       palette: paletteFor(feature.slug, meta.palette),
       sources: normalizeSources(feature.sources, [
-        { label: 'TMDb 影片基础资料', retrieved: new Date().toISOString().slice(0, 10) },
+        { label: 'TMDb 影片基础资料', url: 'https://www.themoviedb.org/', retrieved: new Date().toISOString().slice(0, 10) },
       ]),
     };
     const filePath = path.join(CONTENT_DIR, 'features', `${feature.slug}.md`);

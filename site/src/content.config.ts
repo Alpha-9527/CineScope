@@ -17,7 +17,7 @@ const sources = z
   .array(
     z.object({
       label: z.string(),
-      url: z.string().url().optional(),
+      url: z.string().url(),
       retrieved: z.string().optional(),
     }),
   )

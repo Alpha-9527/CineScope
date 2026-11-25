@@ -46,8 +46,6 @@ sources:
   - label: IMDb 影片页面
     url: https://www.imdb.com/title/tt0064116/
     retrieved: '2026-11-23'
-  - label: CineScope 编辑部评估记录
-    retrieved: '2026-11-23'
 ---
 
 ## 一个类型的终点

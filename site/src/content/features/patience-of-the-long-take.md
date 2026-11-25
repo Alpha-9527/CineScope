@@ -9,10 +9,13 @@ films:
 palette: ink
 sources:
   - label: 柏林电影节 2011 年官方档案
+    url: https://www.berlinale.de/en/archive/yearbooks/2011.html
     retrieved: '2026-11-16'
   - label: 戛纳电影节 1972 年官方档案
+    url: https://www.festival-cannes.com/en/retrospective/1972/
     retrieved: '2026-11-16'
   - label: 贝拉·塔尔、安德烈·塔可夫斯基公开访谈资料
+    url: https://www.bfi.org.uk/interviews/bela-tarr-satantango-werckmeister-harmonies
     retrieved: '2026-11-16'
 ---
 

@@ -43,8 +43,10 @@ sources:
     url: https://www.themoviedb.org/movie/81401
     retrieved: '2026-11-20'
   - label: 柏林电影节 2011 年官方档案
+    url: https://www.berlinale.de/en/2011/programme/20115947.html
     retrieved: '2026-11-20'
   - label: 尼采都灵事件相关公开哲学资料
+    url: https://blog.lareviewofbooks.org/essays/nietzsches-horse/
     retrieved: '2026-11-20'
 ---
 

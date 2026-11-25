@@ -9,10 +9,13 @@ films:
 palette: sand
 sources:
   - label: 戛纳电影节 2014 年官方档案
+    url: https://www.festival-cannes.com/en/retrospective/2014/
     retrieved: '2026-11-12'
   - label: 威尼斯电影节 2018 年官方档案
+    url: https://www.labiennale.org/en/cinema/2018
     retrieved: '2026-11-12'
   - label: 阿伯德拉马纳·希萨柯、阿方索·卡隆公开访谈资料
+    url: https://new.filmcomment.com/interview-abderrahmane-sissako/
     retrieved: '2026-11-12'
 ---
 

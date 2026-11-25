@@ -48,8 +48,10 @@ sources:
     url: https://www.themoviedb.org/movie/491584
     retrieved: '2026-11-20'
   - label: 戛纳电影节 2018 年官方档案
+    url: https://www.festival-cannes.com/en/f/burning/
     retrieved: '2026-11-20'
   - label: 村上春树短篇《烧仓房》相关公开资料
+    url: https://zh.wikipedia.org/wiki/萤·烧谷仓·其他短篇
     retrieved: '2026-11-20'
 ---
 

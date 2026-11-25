@@ -46,8 +46,10 @@ sources:
     url: https://www.themoviedb.org/movie/265228
     retrieved: '2026-11-19'
   - label: 戛纳电影节 2014 年官方档案
+    url: https://www.festival-cannes.com/en/f/timbuktu/
     retrieved: '2026-11-19'
   - label: 法国凯撒奖 2015 年获奖记录
+    url: https://www.academie-cinema.org/wp-content/uploads/2015/02/palmares-officiel-cesar-2015.pdf
     retrieved: '2026-11-19'
 ---
 

@@ -8,10 +8,13 @@ films:
 palette: ash
 sources:
   - label: 柏林电影节 2011 年官方档案
+    url: https://www.berlinale.de/en/archive/yearbooks/2011.html
     retrieved: '2026-11-18'
   - label: 奥斯卡最佳外语片 2012 年获奖记录
+    url: https://www.oscars.org/oscars/ceremonies/2012
     retrieved: '2026-11-18'
   - label: 阿斯哈·法哈蒂公开访谈资料
+    url: https://www.nylon.com/life/a-hero-asghar-farhadi-interview
     retrieved: '2026-11-18'
 ---
 

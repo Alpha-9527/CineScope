@@ -39,6 +39,7 @@ scores:
   confidence: 0.86
   final: 77
 selection:
+  issue: '2026-11-25'
   angle: 把科幻从"征服宇宙"拉回到人心里最不愿承认的那部分。
 dataStatus: verified
 sources:
@@ -46,8 +47,10 @@ sources:
     url: https://www.themoviedb.org/movie/593
     retrieved: '2026-11-20'
   - label: 戛纳电影节 1972 年官方档案
+    url: https://www.festival-cannes.com/en/f/solaris/
     retrieved: '2026-11-20'
   - label: 斯坦尼斯瓦夫·莱姆原著《索拉利斯星》相关公开资料
+    url: https://zh.wikipedia.org/wiki/索拉里斯星_(小说)
     retrieved: '2026-11-20'
 ---
 

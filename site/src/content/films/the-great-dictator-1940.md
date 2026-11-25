@@ -45,8 +45,6 @@ sources:
   - label: IMDb 影片页面
     url: https://www.imdb.com/title/tt0032553/
     retrieved: '2026-11-23'
-  - label: CineScope 编辑部评估记录
-    retrieved: '2026-11-23'
 ---
 
 1940年，卓别林推出《大独裁者》，此时美国尚未参战，而欧洲已陷战火。一个以默片小流浪汉闻名的喜剧演员，为何要冒险拍摄一部直接讽刺希特勒的有声片？这个问题本身，就是理解这部电影的起点。

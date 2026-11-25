@@ -48,8 +48,10 @@ sources:
     url: https://www.themoviedb.org/movie/713
     retrieved: '2026-11-20'
   - label: 戛纳电影节 1993 年官方档案
+    url: https://www.festival-cannes.com/en/f/the-piano/
     retrieved: '2026-11-20'
   - label: 奥斯卡 1994 年获奖记录
+    url: https://www.oscars.org/oscars/ceremonies/1994
     retrieved: '2026-11-20'
 ---
 

@@ -37,6 +37,7 @@ scores:
   confidence: 0.85
   final: 77
 selection:
+  issue: '2026-11-25'
   angle: 希区柯克有限空间悬念实验，窥视与道德的暧昧值得细看。
 dataStatus: verified
 sources:
@@ -45,8 +46,6 @@ sources:
     retrieved: '2026-11-23'
   - label: IMDb 影片页面
     url: https://www.imdb.com/title/tt0047396/
-    retrieved: '2026-11-23'
-  - label: CineScope 编辑部评估记录
     retrieved: '2026-11-23'
 ---
 

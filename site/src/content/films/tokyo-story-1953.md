@@ -45,8 +45,10 @@ sources:
     url: https://www.themoviedb.org/movie/18148
     retrieved: '2026-11-19'
   - label: 电影旬报 1953 年度十佳记录
+    url: https://zh.wikipedia.org/wiki/電影旬報
     retrieved: '2026-11-19'
   - label: 小津安二郎相关公开研究资料
+    url: https://www.sensesofcinema.com/2003/great-directors/ozu/
     retrieved: '2026-11-19'
 ---
 

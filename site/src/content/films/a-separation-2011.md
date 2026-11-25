@@ -46,8 +46,10 @@ sources:
     url: https://www.themoviedb.org/movie/60243
     retrieved: '2026-11-19'
   - label: 柏林电影节 2011 年官方档案
+    url: https://www.berlinale.de/en/2011/programme/20116885.html
     retrieved: '2026-11-19'
   - label: 奥斯卡最佳外语片 2012 年获奖记录
+    url: https://www.oscars.org/oscars/ceremonies/2012
     retrieved: '2026-11-19'
 ---
 

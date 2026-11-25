@@ -47,8 +47,6 @@ sources:
   - label: IMDb 影片页面
     url: https://www.imdb.com/title/tt0056058/
     retrieved: '2026-11-24'
-  - label: CineScope 编辑部评估记录
-    retrieved: '2026-11-24'
 ---
 
 ## 一个请求，两种尊严

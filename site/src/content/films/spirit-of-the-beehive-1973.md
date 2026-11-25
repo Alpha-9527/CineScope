@@ -46,6 +46,7 @@ sources:
     url: https://www.themoviedb.org/movie/4495
     retrieved: '2026-11-20'
   - label: 圣塞巴斯蒂安电影节 1973 年官方档案
+    url: https://www.sansebastianfestival.com/1973/awards_and_jury_members/awards/1/66/in
     retrieved: '2026-11-20'
 ---
 

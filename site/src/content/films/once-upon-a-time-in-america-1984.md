@@ -37,6 +37,7 @@ scores:
   confidence: 0.78
   final: 66
 selection:
+  issue: '2026-11-26'
   angle: 莱昂内用时间与记忆编织的犯罪史诗，德尼罗与莫里康内共同成就的沉郁之作。
 dataStatus: verified
 sources:

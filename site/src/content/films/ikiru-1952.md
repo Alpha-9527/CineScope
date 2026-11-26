@@ -35,6 +35,7 @@ scores:
   confidence: 0.78
   final: 68
 selection:
+  issue: '2026-11-26'
   angle: 黑泽明少被讨论的现代题材，看志村乔如何用一张脸演完一个人的最后几个月。
 dataStatus: verified
 sources:

@@ -36,6 +36,7 @@ scores:
   confidence: 0.8
   final: 69
 selection:
+  issue: '2026-11-26'
   angle: 卓别林首部有声片，用喜剧直面独裁者，结尾演说值得单独一听。
 dataStatus: verified
 sources:

@@ -37,6 +37,7 @@ scores:
   confidence: 0.78
   final: 69
 selection:
+  issue: '2026-11-27'
   angle: 看卓别林如何用肢体喜剧拆解流水线与失业，默片末期的一次作者表达。
 dataStatus: verified
 sources:

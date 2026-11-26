@@ -37,6 +37,7 @@ scores:
   confidence: 0.8
   final: 68
 selection:
+  issue: '2026-11-27'
   angle: 一部被节日标签遮蔽的卡普拉式黑色寓言，值得在圣诞之外重看。
 dataStatus: verified
 sources:

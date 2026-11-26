@@ -5,8 +5,8 @@
 
 CineScope 是一本由 AI 编辑部持续出版的全球电影杂志。它不做电影数据库、不做搜索、不做社区：只负责发现、判断、撰写与出版。
 
-- **每日**：06:30 生成当日推荐（DeepSeek 空闲时段），09:30 推送上线；默认 3 部，质量不足时自动少选。
-- **每周**：周日 20:00 生成一期独立策划的周刊（周末全天为空闲时段），次日 09:30 随发布任务上线；主题、片单与特别发现都重新组织。
+- **每日**：06:30 生成当日推荐（DeepSeek 空闲时段），07:00 推送上线；默认 3 部，质量不足时自动少选。
+- **每周**：周日 20:00 生成一期独立策划的周刊（周末全天为空闲时段），次日 07:00 随发布任务上线；主题、片单与特别发现都重新组织。
 - **专题**：按国家、导演、流派、电影史等方向不定期出版深度文章。
 
 站点为纯静态 Astro 网站，构建产物可部署到 Cloudflare Pages；生产端（PostgreSQL + DeepSeek + n8n）只负责内容生产。
@@ -87,7 +87,36 @@ node src/cli.mjs maintain --dry-run       # 一致性检查
 
 完整参数见 `node src/cli.mjs --help`。
 
-### 4. 发布链路
+### 4. 每日一键发布（推荐）
+
+个人/小团队最省事的用法：每天开一次电脑，一条命令走完整条链路。
+**不需要** n8n、cron、服务器——只要 Node ≥ 20 + PostgreSQL + Git。
+
+```bash
+node scripts/run-daily.mjs
+```
+
+内部会串起：`discover → enrich → assess → write → daily → weekly → publish --commit --push`
+每一步独立 try/catch，失败不中断后续；daily/weekly 若当天/当周已存在会自动跳过；git 无变更不会空提交。
+
+常用开关：
+
+| 命令 | 作用 |
+|------|------|
+| `node scripts/run-daily.mjs --dry-run` | 预演，不写数据库也不 push |
+| `node scripts/run-daily.mjs --only daily,weekly,publish` | 只跑发布阶段（跳过发现/评估/撰稿） |
+| `node scripts/run-daily.mjs --skip-discover --skip-enrich` | 跳过前两步 |
+| `node scripts/run-daily.mjs --no-push` | commit 不 push，改完人工 git push |
+
+推送触发 Cloudflare Pages 自动构建，上线完成。
+若项目还没初始化 Git 仓库，先：
+
+```bash
+git init && git add . && git commit -m "init cinescope"
+git remote add origin git@github.com:<you>/cinescope.git
+```
+
+### 5. 发布链路
 
 ```
 PostgreSQL → pipeline publish → site/src/content/**.md
@@ -127,12 +156,12 @@ git remote add origin git@github.com:<you>/cinescope.git
 | `wf04-AI-编辑撰稿.json` | 每天 04:00 | `write` |
 | `wf05-每日刊物.json` | 每天 06:30 | `daily --publish`（生成并标记发布） |
 | `wf06-每周杂志.json` | 周日 20:00 | `weekly --publish`（生成并标记发布） |
-| `wf07-静态站点发布.json` | 每天 09:30 或手动 | `publish --commit`（提交）；宿主机负责推送 |
+| `wf07-静态站点发布.json` | 每天 07:00 或手动 | `publish --commit`（提交）；宿主机负责推送 |
 | `wf08-数据库维护.json` | 周日 03:30 | `maintain`（备份由宿主机 cron 执行） |
 
 ### AI 任务的运行时段
 
-DeepSeek 的高峰时段为北京时间工作日 09:00–12:00、14:00–18:00（法定节假日除外），其余时间为空闲时段，单价约为高峰的一半。因此所有调用模型的环节都排在空闲时段：评估 03:00、撰稿 04:00、每日 06:30、周刊周日 20:00。静态站点发布（WF07）固定在 09:30，只做导出与 Git 提交，不调用模型，推送时间保持不变。
+DeepSeek 的高峰时段为北京时间工作日 09:00–12:00、14:00–18:00（法定节假日除外），其余时间为空闲时段，单价约为高峰的一半。因此所有调用模型的环节都排在空闲时段：评估 03:00、撰稿 04:00、每日 06:30、周刊周日 20:00。静态站点发布（WF07）固定在 07:00，只做导出与 Git 提交，不调用模型。
 
 ### WF07 自动提交
 

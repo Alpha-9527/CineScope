@@ -202,20 +202,20 @@ const WORKFLOWS = [
     id: 'wf05',
     name: 'WF05 · 每日刊物',
     cron: '30 6 * * *',
-    description: '每天 06:30（DeepSeek 空闲时段，价格约为高峰一半）生成当日推荐。\n09:30 由 WF07 导出并推送，站点上线时间不变。\n若当天候选质量不足，管线会自动少选，不会凑数。\n需要：数据库、DeepSeek。',
+    description: '每天 06:30（DeepSeek 空闲时段，价格约为高峰一半）生成当日推荐。\n07:00 由 WF07 导出并推送上线。\n若当天候选质量不足，管线会自动少选，不会凑数。\n需要：数据库、DeepSeek。',
     steps: [{ name: '生成每日刊物', command: `${PIPELINE} daily --publish` }],
   }),
   build({
     id: 'wf06',
     name: 'WF06 · 每周杂志',
     cron: '0 20 * * 0',
-    description: '每周日 20:00 独立策划本期主题、片单与特别发现。\n周日全天属于 DeepSeek 空闲时段，价格约为高峰一半。\n推送仍由 WF07 在次日 09:30 统一完成。\n周刊不是每日内容的机械汇总。',
+    description: '每周日 20:00 独立策划本期主题、片单与特别发现。\n周日全天属于 DeepSeek 空闲时段，价格约为高峰一半。\n推送仍由 WF07 在次日 07:00 统一完成。\n周刊不是每日内容的机械汇总。',
     steps: [{ name: '生成周刊', command: `${PIPELINE} weekly --publish` }],
   }),
   build({
     id: 'wf07',
     name: 'WF07 · 静态站点发布',
-    cron: '30 9 * * *',
+    cron: '0 7 * * *',
     description:
       '把已发布内容导出为 Markdown 并提交到 Git；宿主机定时任务（每 10 分钟）推送后，Cloudflare Pages 自动构建上线。\n容器内不安装 SSH 私钥、不执行 npm build：构建交给 Cloudflare，失败时线上保持上一个正常版本。\npublish_logs 保留每次导出的记录。',
     manual: true,
